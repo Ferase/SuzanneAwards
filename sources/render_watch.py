@@ -127,6 +127,8 @@ def _on_composite_cancel(dummy) -> None:
     # Emit event
     manager.handle_event(AchievementEvent(type="composite_cancel"))
 
+
+
 def register():
     """Register handlers."""
 

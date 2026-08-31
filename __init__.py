@@ -5,7 +5,7 @@ bl_info = {
     "version": (0, 3),
     "blender": (4, 0, 0),
     "location": "View3D > N-Panel > Achievements",
-    "description": "Tracks user actions and unlocks achievements",
+    "description": "Adds achievements to Blender",
     "category": "System",
 }
 
@@ -29,14 +29,13 @@ from .sources import file_watch
 from .sources import render_watch
 from .sources import keyframes_watch
 
-# Modules to initialize (daily's register() only sets up its periodic
-# timer - its load() runs separately below, before init_achievements())
+# Modules to initialize
 _modules = (preferences, playtime, ui, toast, sound, operator_poll, undo_redo_watch, file_watch, render_watch, keyframes_watch)
 
 
 
 def register():
-    """Register states, manager, and modules on addon load."""
+    """Register all modules and run startup routines."""
 
     state.load()
     exp.load()
@@ -47,7 +46,7 @@ def register():
             mod.register()
 
 def unregister():
-    """Tear down modules on addon disable."""
+    """Unregister modules."""
 
     for mod in reversed(_modules):
         if hasattr(mod, "unregister"):

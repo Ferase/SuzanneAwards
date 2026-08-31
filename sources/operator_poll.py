@@ -221,11 +221,13 @@ def _poll() -> float:
     _last_op_count = current_count
     return POLL_INTERVAL
 
+
+
 def register():
     """Register the source."""
 
     global _last_op_count, _last_median, _last_mesh_counts, _last_top_signature, _last_redo_panel_adjustment_time
-    
+
     _last_op_count = 0
     _last_median = None
     _last_mesh_counts = None

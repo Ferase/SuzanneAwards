@@ -70,6 +70,8 @@ def _on_redo_post(scene) -> None:
     # Emit event
     manager.handle_event(AchievementEvent(type="redo"))
 
+
+
 def register():
     """Register handlers."""
 

@@ -1,5 +1,5 @@
 """
-The sound cue played when the user receives an achievement. Utilizes manager.add_unlock_listener() to hitchhike on the unlock event, same as toast.py.
+Operates the sound cues performed by the addon.
 """
 
 

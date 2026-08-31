@@ -27,10 +27,11 @@ from .sources import operator_poll
 from .sources import undo_redo_watch
 from .sources import file_watch
 from .sources import render_watch
+from .sources import keyframes_watch
 
 # Modules to initialize (daily's register() only sets up its periodic
 # timer - its load() runs separately below, before init_achievements())
-_modules = (preferences, playtime, ui, toast, sound, operator_poll, undo_redo_watch, file_watch, render_watch)
+_modules = (preferences, playtime, ui, toast, sound, operator_poll, undo_redo_watch, file_watch, render_watch, keyframes_watch)
 
 
 

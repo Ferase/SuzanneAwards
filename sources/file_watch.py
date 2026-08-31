@@ -1,19 +1,19 @@
 """
 Watches for various file-related actions.
 
-## Events Fired:
+## Events Fired
+
 ### file_new
-*No extras*
-A new project was started
+A new project was started.
 
 ### file_open
-A project file was opened
+A project file was opened.
 
 ### file_save
-A project file was saved
+A project file was saved.
 
 ### file_blend_import
-A project's assets were appended to the active project
+A project's assets were appended to the active project.
 """
 
 
@@ -100,6 +100,8 @@ def _on_blend_import_post(dummy) -> None:
     """Fires when the user appends data to the active project file."""
 
     manager.handle_event(AchievementEvent(type="file_blend_import"))
+
+
 
 def register():
     """Register all handlers."""

@@ -1,12 +1,13 @@
 """
-Watches for undo completions using bpy.app.handlers.undo_post. This exists because bpy.ops.ed.undo never gets recorded into wm.operators - Blender's undo stack is managed separately from the normal operator history, so operator_poll.py can never see it fire, no matter how it's triggered (Ctrl+Z, menu, etc).
+Watches for various undo/redo-related actions.
 
-Also filters out a specific false positive: editing a value in the "adjust last operation" (redo) panel and confirming it fires undo_post too. Three earlier approaches to telling the two apart didn't hold up:
-  1. Pairing undo_post with an expected redo_post - doesn't fire for this path at all, since the redo panel re-executes the operator rather than performing a genuine redo.
-  2. Watching for any depsgraph_update_post in a short window after - false-triggered on the undo's OWN settling update, which lands in that window just as reliably as a real re-execution would.
-  3. Comparing bpy.context.window_manager.operators counts before/after, read directly inside these handlers - unreliable, since wm.operators isn't trustworthy from inside undo_pre/undo_post callbacks at all (same category of restricted-context issue as the _RestrictData problem toast.py hit during register()).
+## Events Fired
 
-Current approach: operator_poll.py reads wm.operators from a bpy.app.timers callback, which IS reliable, and already detects in-place edits to the top-of-history entry (see its get_last_redo_panel_adjustment_time()). This module just asks operator_poll whether it saw one recently, rather than reading wm.operators itself.
+### undo
+An action was undone.
+
+### redo
+An action was redone.
 """
 
 
@@ -20,54 +21,57 @@ from .. import manager
 from ..events import AchievementEvent
 from . import operator_poll
 
-# True from the moment undo_post fires until we've confirmed (a short
-# while later) whether it was actually a redo-panel edit
+# Used to check timing and ensure an undo doesn't get lumped in with the modify panel's undo-redo logic
 _pending_undo: bool = False
 
-# Has to comfortably outlast operator_poll's own POLL_INTERVAL, since
-# operator_poll needs at least one of its own poll ticks to notice a
-# redo-panel edit before we can ask it about one
+# The window used for the timer to detect whether the undo was a real undo and not a result of the modify panel's undo-redo logic
 PENDING_UNDO_WINDOW: float = operator_poll.POLL_INTERVAL + 0.2
 
 
 
 @persistent
 def _on_undo_post(scene) -> None:
-    """Runs after any undo completes - genuine or as the first half of a redo-panel edit. Don't emit the achievement-facing event yet; wait out PENDING_UNDO_WINDOW so operator_poll has a chance to notice a possible in-place edit first."""
+    """Firues when an undo is processed in any way, including by the modify last action panel."""
 
     global _pending_undo
 
+    # We're waiting for an undo
     _pending_undo = True
 
+    # Set up the timer if it isn't set up already
     if not bpy.app.timers.is_registered(_resolve_pending_undo):
         bpy.app.timers.register(_resolve_pending_undo, first_interval=PENDING_UNDO_WINDOW, persistent=True)
 
 def _resolve_pending_undo() -> None:
-    """Runs after PENDING_UNDO_WINDOW. Asks operator_poll whether it saw a redo-panel-style in-place edit during that window - if so, this was a redo-panel edit, suppress. Otherwise it's a genuine undo - emit it now."""
+    """The actual emitter for an undo event."""
 
     global _pending_undo
 
+    # If we're waiting for an undo, check whether it is valid to emit it.
     if _pending_undo:
+        # Check the age of the action to see whetehr or not it is safe to emit the event
         adjustment_age = time.time() - operator_poll.get_last_redo_panel_adjustment_time()
 
+        # If we're too early for our window, do nothing
         if adjustment_age < PENDING_UNDO_WINDOW:
-            print("undo suppressed (adjust-last-operation panel)")
-        else:
-            print("undo")
-            manager.handle_event(AchievementEvent(type="undo"))
+            return
 
+        # Emit event otherwise
+        manager.handle_event(AchievementEvent(type="undo"))
+
+    # Reset the pending undo tracker
     _pending_undo = False
-    return None  # one-shot, don't reschedule
+    return
 
 @persistent
 def _on_redo_post(scene) -> None:
-    """Runs after a genuine redo (Ctrl+Shift+Z / Redo menu)."""
+    """Fires whenevr a redo is processed."""
 
-    print("redo")
+    # Emit event
     manager.handle_event(AchievementEvent(type="redo"))
 
 def register():
-    """Register the undo and redo handlers."""
+    """Register handlers."""
 
     global _pending_undo
     _pending_undo = False
@@ -79,7 +83,7 @@ def register():
         bpy.app.handlers.redo_post.append(_on_redo_post)
 
 def unregister():
-    """Unregister the undo and redo handlers."""
+    """Unregister handlers."""
 
     if _on_undo_post in bpy.app.handlers.undo_post:
         bpy.app.handlers.undo_post.remove(_on_undo_post)

@@ -22,16 +22,22 @@ class RecreateDefaultCube(GlobalAchievement):
             "OBJECT_OT_editmode_toggle"
         ]
 
-        bpy.app.timers.register(self._get_default_cube, first_interval=1.0)
+        # bpy.app.timers.register(self._get_default_cube, first_interval=1.0)
+
+    def _reset(self) -> None:
+        self._deleted = False
+        self._selected_cube = False
+        self._ineligable = False
+        self._get_default_cube()
 
     def _get_default_cube(self) -> None:
         self.default_cube = bpy.data.objects.get("Cube", None)
 
     def triggered(self, event: AchievementEvent) -> None:
-        if self._ineligable:
-            return
+        if event.type == "file_new":
+            self._reset()
 
-        if not self.default_cube:
+        if self._ineligable:
             return
 
         if event.type != "operator":
@@ -47,12 +53,16 @@ class RecreateDefaultCube(GlobalAchievement):
             self._ineligable = True
             return
 
+        if not self.default_cube:
+            return
+
         if event.bl_idname == "OBJECT_OT_delete":
             if not self._selected_cube:
                 return
             
             self._selected_cube: bool = False
             self.default_cube = None
+            self._deleted = True
             return
         
         if event.bl_idname == "VIEW3D_OT_select":

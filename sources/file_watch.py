@@ -1,42 +1,19 @@
 """
-Detects two things operator_poll.py structurally can't: opening a
-project, and saving one - testing confirms wm.save_mainfile, like
-ed.undo, never gets recorded into wm.operators (likely for the same
-reason: there's no "adjust last operation" panel for either, so
-Blender doesn't bother tracking them in the operator-redo history).
+Watches for various file-related actions.
 
-OPEN: bpy.app.handlers.load_post fires after ANY file load, including
-File > New. Filtered down to genuine opens by checking bpy.data.filepath:
-a brand new, unsaved file always has an empty filepath, an opened
-.blend always has its real one.
+## Events Fired:
+### file_new
+*No extras*
+A new project was started
 
-SAVE: bpy.app.handlers.save_post fires after any save completes -
-regular, Save As, or Save Copy - but its callback doesn't say which,
-and losing wm.operators means the "copy" property isn't reachable
-either. bpy.data.is_dirty does NOT work as a substitute - it just means
-"unsaved changes exist" and gets cleared by ANY successful save, copy
-included (confirmed by testing).
+### file_open
+A project file was opened
 
-What actually distinguishes Save Copy: it deliberately does NOT write
-to bpy.data.filepath - the copy goes to a different path entirely,
-leaving the currently-open document's own file completely untouched.
-So: snapshot that file's mtime in save_pre, compare it in save_post.
-  - Regular save/re-save: bpy.data.filepath's file WAS just rewritten.
-  - Save As: bpy.data.filepath changes to the new path, and THAT file
-    was just written.
-  - Save Copy: bpy.data.filepath is unchanged, and its file's mtime is
-    unchanged too, since nothing was written there this time.
-  - First-ever save of a never-saved file: bpy.data.filepath goes from
-    empty to populated for a real save; a Save Copy on a never-saved
-    file leaves it empty even after completing.
+### file_save
+A project file was saved
 
-Known limitation: relies on filesystem mtime resolution being finer
-than how long a save takes. True on effectively all filesystems in
-common use today, but a very coarse-grained filesystem clock could
-theoretically make a fast genuine resave look unchanged.
-
-All three handlers need @persistent to survive a subsequent
-File>New/Open themselves, same reasoning as undo_redo_watch.py.
+### file_blend_import
+A project's assets were appended to the active project
 """
 
 
@@ -49,63 +26,86 @@ from bpy.app.handlers import persistent
 from .. import manager
 from ..events import AchievementEvent
 
-# Snapshot taken in save_pre, read back in save_post
+# Track save path ans dave time to determine whetehr a project was saved as a copy
 _filepath_before_save: str = ""
 _mtime_before_save: float | None = None
+
+# Track the first startup to avoid double-calling _on_load_post()
+_first_startup: bool = False
 
 
 
 @persistent
 def _on_load_post(dummy) -> None:
-    """Runs after any file load. Only counted as a genuine "project
-    opened" event if the loaded file actually has a path."""
+    """Fires whenever the suer starts a new project or opens a project file."""
 
+    global _first_startup
+
+    # Skip once
+    if _first_startup == False:
+        _first_startup == True
+        return
+
+    # If a filepath is specified, we have opened a file
     if bpy.data.filepath:
         manager.handle_event(AchievementEvent(type="file_open"))
+        return
+
+    # Otherwise, we've started a new project
+    manager.handle_event(AchievementEvent(type="file_new"))
 
 @persistent
 def _on_save_pre(dummy) -> None:
-    """Snapshot the current filepath and its on-disk mtime before the
-    save happens, so save_post can tell whether that specific file
-    actually got rewritten."""
+    """Fires BEFORE the user saves a project file or saves a copy of a project file. This prepares variables to identify exactly which of the two saves the user made."""
 
     global _filepath_before_save, _mtime_before_save
 
+    # Determine current file path before saving
     _filepath_before_save = bpy.data.filepath
 
+    # Set the time before saved
     if _filepath_before_save and os.path.exists(_filepath_before_save):
         _mtime_before_save = os.path.getmtime(_filepath_before_save)
-    else:
-        _mtime_before_save = None
+        return
+
+    # Reset time before saved
+    _mtime_before_save = None
 
 @persistent
 def _on_save_post(dummy) -> None:
-    """Runs after any save completes - regular, Save As, or Save Copy.
-    See module docstring for how is_copy is determined."""
+    """Fires AFTER the user saves a project file or saves a copy of a project file."""
 
+    global _filepath_before_save
+
+    # Get current filepath after save
     filepath_after = bpy.data.filepath
 
+    # If there's no filepath, then a copy of a new, unsaved project was saved
     if not filepath_after:
-        # Still no real filepath even after a completed save - only
-        # happens via Save Copy on a file that's never been saved
         is_copy = True
+
+    # If the filepath before saving is different from the filepath after saving, it was saved normally
     elif filepath_after != _filepath_before_save:
-        # Save As - filepath changed, meaning a brand new file was
-        # just written at the new path
         is_copy = False
+
+    # Otherwise, a copy of a saved project was saved because the time wouldn't have changed.
     else:
-        # Same filepath as before - only a genuine save/re-save
-        # actually rewrites it; Save Copy leaves it untouched
         current_mtime = os.path.getmtime(filepath_after) if os.path.exists(filepath_after) else None
         is_copy = (current_mtime == _mtime_before_save)
 
+    # Emit event
     manager.handle_event(AchievementEvent(type="file_save", extra={"is_copy": is_copy}))
 
 def _on_blend_import_post(dummy) -> None:
+    """Fires when the user appends data to the active project file."""
+
     manager.handle_event(AchievementEvent(type="file_blend_import"))
 
 def register():
-    """Register the load_post/save_pre/save_post handlers."""
+    """Register all handlers."""
+
+    global _first_startup
+    _first_startup = False
 
     if _on_load_post not in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.append(_on_load_post)
@@ -120,7 +120,7 @@ def register():
         bpy.app.handlers.blend_import_post.append(_on_blend_import_post)
 
 def unregister():
-    """Unregister the load_post/save_pre/save_post handlers."""
+    """Unregister all handlers."""
 
     if _on_load_post in bpy.app.handlers.load_post:
         bpy.app.handlers.load_post.remove(_on_load_post)

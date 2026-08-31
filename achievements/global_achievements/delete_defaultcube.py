@@ -16,12 +16,21 @@ class DeleteDefaultCube(GlobalAchievement):
         self._selected_cube: bool = False
         self._deleted: bool = False
 
-        bpy.app.timers.register(self._get_default_cube, first_interval=1.0)
+        # bpy.app.timers.register(self._get_default_cube, first_interval=1.0)
+
+    def _reset(self) -> None:
+        self._deleted = False
+        self._selected_cube = False
+        self._get_default_cube()
 
     def _get_default_cube(self) -> None:
         self.default_cube = bpy.data.objects.get("Cube", None)
+        print(self.default_cube)
 
     def triggered(self, event: AchievementEvent) -> None:
+        if event.type == "file_new":
+            self._reset()
+
         if self._deleted:
             return
 

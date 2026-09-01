@@ -31,6 +31,9 @@ from .merge_distance import MergeDistance
 from .delete_faces import DeleteFaces
 from .delete_edges import DeleteEdges
 from .delete_vertices import DeleteVertices
+from .mesh_inset import MeshInset
+from .mesh_spin import MeshSpin
+from .mesh_bevel import MeshBevel
 
 # Nodes
 from .create_nodes_compositor import CreateNodesCompositor
@@ -87,6 +90,9 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     DeleteFaces,
     DeleteEdges,
     DeleteVertices,
+    MeshInset,
+    MeshSpin,
+    MeshBevel,
 
     # Nodes
     CreateNodesCompositor,

@@ -16,7 +16,7 @@ class DeleteDefaultCube(GlobalAchievement):
         self._selected_cube: bool = False
         self._deleted: bool = False
 
-        # bpy.app.timers.register(self._get_default_cube, first_interval=1.0)
+        bpy.app.timers.register(self._get_default_cube, first_interval=0.5)
 
     def _reset(self) -> None:
         self._deleted = False
@@ -24,12 +24,26 @@ class DeleteDefaultCube(GlobalAchievement):
         self._get_default_cube()
 
     def _get_default_cube(self) -> None:
+        self.default_cube = None
         self.default_cube = bpy.data.objects.get("Cube", None)
-        print(self.default_cube)
+
+    def _check_cube_selection(self) -> None:
+        try:
+            if self.default_cube.select_get():
+                self._selected_cube: bool = True
+                return
+        except ReferenceError:
+            print("[delete_defaultcube] Default cube was destroyed, trying to find it one last time...")
+            self._get_default_cube()
+            self._check_cube_selection()
+            return
+
+        print("[delete_defaultcube] Default cube deselected")
+        self._selected_cube: bool = False
 
     def triggered(self, event: AchievementEvent) -> None:
         if event.type == "file_new":
-            self._reset()
+            bpy.app.timers.register(self._reset, first_interval=0.5, persistent=True)
 
         if self._deleted:
             return
@@ -51,9 +65,5 @@ class DeleteDefaultCube(GlobalAchievement):
             return
         
         if event.bl_idname == "VIEW3D_OT_select":
-            if self.default_cube.select_get():
-                self._selected_cube: bool = True
-                return
-            
-            self._selected_cube: bool = False
+            self._check_cube_selection()
             return

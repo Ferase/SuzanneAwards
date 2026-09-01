@@ -178,17 +178,8 @@ def _poll() -> float:
 
         # Emit an event for each operator
         for op in new_ops:
-            # Print operator name
-            print(f"\n{op.bl_idname}")
-
-            print("- Props")
+            # Extract properties
             props = _extract_properties(op.properties)
-            for k, v in props.items():
-                print(f"  - {k}: {v}")
-
-            print("- Extras")
-            for k, v in extra.items():
-                print(f"  - {k}: {v}")
 
             # Draft event
             event = AchievementEvent(

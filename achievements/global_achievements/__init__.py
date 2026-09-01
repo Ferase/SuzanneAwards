@@ -7,6 +7,7 @@ from .._base import GlobalAchievement
 # General
 from .delete_defaultcube import DeleteDefaultCube
 from .recreate_defaultcube import RecreateDefaultCube
+from .modes_1000 import Modes1000
 
 # Startup Streak
 from .startup_2d import Startup2D
@@ -29,6 +30,7 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
     # General
     DeleteDefaultCube,
     RecreateDefaultCube,
+    Modes1000,
 
     # Startup Streak
     Startup2D,

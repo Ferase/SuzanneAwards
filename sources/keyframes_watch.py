@@ -35,7 +35,7 @@ def _on_animation_playback_post(dummy) -> None:
 def _on_frame_change(dummy) -> None:
     """Fires whenever the active animation frame index changes."""
 
-    manager.handle_event(AchievementEvent(type="frame_change", extra={"frame", bpy.context.scene.frame_current}))
+    manager.handle_event(AchievementEvent(type="frame_change", extra={"frame": bpy.context.scene.frame_current}))
 
 
 

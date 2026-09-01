@@ -34,7 +34,8 @@ TICK_INTERVAL: float = 0.05
 BASE_ICON_SIZE: int = 40
 BASE_ICON_TEXT_GAP: int = 12
 
-ICON_RELATIVE_PATH = ("assets", "img", "award.png")
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
+ICON_PATH = os.path.join(ASSETS_DIR, "img", "default", "award.png")
 
 # Toast state
 _active_toasts: list[dict] = []
@@ -43,6 +44,7 @@ _shader = None
 _image_shader = None
 _icon_image = None
 _icon_texture = None
+
 
 
 def _get_ui_scale() -> float:
@@ -61,19 +63,15 @@ def _get_theme_colors():
     return accent, normal
 
 def _load_icon() -> None:
-    """Load the award icon and build a GPU texture from it. Deferred to
-    a one-shot timer at register() rather than called directly - some
-    Blender data access is unreliable this early in registration."""
+    """Load tha icon for the achievement."""
 
     global _icon_image, _icon_texture
 
-    path = os.path.join(os.path.dirname(__file__), *ICON_RELATIVE_PATH)
-
-    if not os.path.exists(path):
-        print(f"[toast] Icon not found at {path}, toasts will draw without it.")
+    if not os.path.exists(ICON_PATH):
+        print(f"[toast] Icon not found at {ICON_PATH}, toasts will draw without it.")
         return
 
-    _icon_image = bpy.data.images.load(path, check_existing=True)
+    _icon_image = bpy.data.images.load(ICON_PATH, check_existing=True)
     _icon_texture = gpu.texture.from_image(_icon_image)
 
 def _compute_alpha(elapsed: float) -> float:
@@ -224,19 +222,18 @@ def show_toast(name: str) -> None:
     if not bpy.app.timers.is_registered(_tick):
         bpy.app.timers.register(_tick, first_interval=0.0, persistent=True)
 
-    # Redraw
+    # Redraw UI
     _tag_redraw()
 
 def _on_unlock(instance: BlenderAchievement, levels_gained: int):
-    """Shows toast on unlock, attached to the manager using manager.add_unlock_listener().
-
-    levels_gained is accepted but not yet used - the toast's EXP bar is
-    still a follow-up piece of work."""
+    """Shows toast on unlock, attached to the manager using manager.add_unlock_listener()."""
 
     show_toast(instance.NAME)
 
+
+
 def register():
-    """Register the toast."""
+    """Register the toast and its shaders."""
 
     global _shader, _image_shader, _draw_handle
 
@@ -250,7 +247,7 @@ def register():
     manager.add_unlock_listener(_on_unlock)
 
 def unregister():
-    """Unregister the toast."""
+    """Unregister the toast and its shaders."""
 
     global _draw_handle, _icon_image, _icon_texture
 

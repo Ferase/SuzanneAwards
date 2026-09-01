@@ -40,13 +40,13 @@ def get_prefs() -> "ACHIEVEMENT_AP_preferences":
 classes = (ACHIEVEMENT_AP_preferences,)
 
 def register():
-    """Register the preferences class."""
+    """Register preferences."""
 
     for cls in classes:
         bpy.utils.register_class(cls)
 
 def unregister():
-    """Unregister the preferences class."""
+    """Unregister preferences."""
 
     for cls in reversed(classes):
         bpy.utils.unregister_class(cls)

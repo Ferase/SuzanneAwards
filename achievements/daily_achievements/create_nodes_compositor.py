@@ -14,3 +14,4 @@ class CreateNodesCompositor(CreateNodesShader):
     def __init__(self) -> None:
         super().__init__()
         self.space_tree_type: str = "CompositorNodeTree"
+        self.goal = self.GOAL_VARIANTS[0]

@@ -1,9 +1,5 @@
 """
-Tracks the user's level and EXP. The EXP required to advance from a
-given level to the next increases linearly with level. EXP is stored
-as "progress within the current level" (it resets to 0 on level-up),
-not as a lifetime cumulative total - that's what both the N-panel bar
-and the toast bar will represent a fraction of.
+Subsystem for tracking and incrementing the user's EXP as they earn achievements.
 """
 
 
@@ -12,72 +8,98 @@ import bpy
 import json
 import os
 
-# Tuning: EXP needed to go from level 1 to level 2, and how much more
-# each subsequent level requires than the last
+# Required EXP to level up to level 2
 BASE_EXP_TO_LEVEL: int = 100
+
+# The amount by which the requried EXP to level up increases linearly
 EXP_INCREMENT_PER_LEVEL: int = 25
 
+# EXP state save file name
 SAVE_FILENAME: str = "achievement_exp.json"
 
+# Current level
 level: int = 1
-exp: int = 0  # progress within the current level, NOT a lifetime total
+
+# EXP within the current level
+exp: int = 0
+
+# EXP all-time total
+exp_total: int = 0
 
 
 
 def exp_required_for_level(lvl: int) -> int:
-    """EXP required to advance FROM the given level TO the next one."""
+    """Calculate EXP threshold required to advance from the given level to the next one."""
 
     return BASE_EXP_TO_LEVEL + EXP_INCREMENT_PER_LEVEL * (lvl - 1)
 
 def get_save_path() -> str:
-    cfg_dir = bpy.utils.user_resource('CONFIG')
+    """Get the EXP state save fiel path within Blender's config directory."""
+
+    # Get the Blender config
+    cfg_dir = bpy.utils.user_resource("CONFIG")
     return os.path.join(cfg_dir, SAVE_FILENAME)
 
 def load() -> None:
-    """Load level/EXP from disk."""
+    """Load EXP and level from the EXP save file."""
 
-    global level, exp
+    global level, exp, exp_total
 
+    # Get the EXP save file path
     path = get_save_path()
-    if os.path.exists(path):
-        with open(path, "r") as f:
-            data = json.load(f)
-        level = data.get("level", 1)
-        exp = data.get("exp", 0)
-    else:
+
+    # If the save file doesn't exist, set to default values
+    if not os.path.exists(path):
         level = 1
         exp = 0
+        exp_total = 0
+        return
+
+    # Otherwise, open the save file and get the JSON data
+    with open(path, "r") as f:
+        data = json.load(f)
+
+    # Set the level and EXP
+    level = data.get("level", 1)
+    exp = data.get("exp", 0)
+    exp_total = data.get("exp_total", 0)
 
 def save() -> None:
-    """Save level/EXP to disk."""
+    """Save EXP and level to the EXP save file."""
 
+    # Write JSON file
     with open(get_save_path(), "w") as f:
-        json.dump({"level": level, "exp": exp}, f, indent=2)
+        json.dump({"level": level, "exp": exp, "exp_total": exp_total}, f, indent=2)
 
 def add_exp(amount: int) -> list[int]:
-    """Adds EXP, applying as many level-ups as the amount covers (in
-    case a single achievement's EXP is enough to cross more than one
-    threshold at once). Returns the list of levels reached, in order -
-    empty if no level-up happened."""
+    """Add EXP to the user's current EXP. Level up the user if the EXP exceeds the level threshold, do so for as many levels the user surpasses."""
 
-    global level, exp
+    global level, exp, exp_total
 
+    # Initialize a list of levels gained
     levels_gained: list[int] = []
-    exp += amount
 
+    # Increment EXP counters
+    exp += amount
+    exp_total += amount
+
+    # Get the threshold of EXP for the next level
     threshold = exp_required_for_level(level)
+
+    # If teh EXP is greater than the threshold, continuously subtract the threshold, add levels, and redefine the threshold until the EXP falls below the new threshold
     while exp >= threshold:
         exp -= threshold
         level += 1
         levels_gained.append(level)
         threshold = exp_required_for_level(level)
 
+    # Save teh EXP save file
     save()
     return levels_gained
 
 def get_progress_fraction() -> float:
-    """0.0-1.0 fraction of the way through the current level. Used to
-    drive both the N-panel bar and the toast bar."""
+    """Calculates a normalized 0.0-1.0 value to represent how far along the user is on their current level. Used for the UI progress bar."""
 
+    # Get the current threshold and calculate the current EXP value's percentage of it
     threshold = exp_required_for_level(level)
     return exp / threshold if threshold > 0 else 0.0

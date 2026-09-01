@@ -1,13 +1,12 @@
 """
-Operates the sound cues performed by the addon.
+Subsystem that operates the sound cues performed by the addon.
 """
 
 
 
-import bpy
 import aud
 
-from pathlib import Path
+import os
 
 from . import manager
 from .achievements._base import BlenderAchievement
@@ -16,7 +15,8 @@ from . import preferences
 
 
 # Path to the bundled chime, relative to this file
-SOUND_PATH: Path = Path(__file__).parent / "assets" / "wav" / "unlock.wav"
+ASSETS_DIR: str = os.path.join(os.path.dirname(__file__), "assets")
+SOUND_PATH: str = os.path.join(ASSETS_DIR, "wav", "default", "unlock.wav")
 
 # Playback device, created lazily on first use
 _device = None
@@ -52,6 +52,8 @@ def _on_unlock(instance: BlenderAchievement, levels_gained: int):
     """Plays the unlock chime, attached to the manager using manager.add_unlock_listener()."""
 
     play_unlock_sound()
+
+
 
 def register():
     """Register the sound cue's unlock listener."""

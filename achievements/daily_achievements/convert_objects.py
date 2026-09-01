@@ -1,9 +1,8 @@
-from .._base import DailyAchievement
-from ...events import AchievementEvent
+from .templates.template_singleop import TemplateSingleOpAchievement
 
 
 
-class ConvertObjects(DailyAchievement):
+class ConvertObjects(TemplateSingleOpAchievement):
     ID = "daily_convert_objects"
     NAME = "Metamorphosis"
     DESC = "Convert objects to another type"
@@ -14,24 +13,5 @@ class ConvertObjects(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
-
-        # Placeholder
+        self.desired_op: str = "OBJECT_OT_convert"
         self.goal = self.GOAL_VARIANTS[0]
-
-    def triggered(self, event: AchievementEvent) -> None:
-        if event.type != "operator":
-            return
-
-        if event.bl_idname != "OBJECT_OT_convert":
-            return
-
-        self.count += 1
-        if self.count < self.goal:
-            self.save()
-            return
-
-        self.unlock()
-
-    def status_text(self) -> str:
-        return f"{self.count}/{self.goal}"

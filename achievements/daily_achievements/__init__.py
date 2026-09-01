@@ -1,8 +1,8 @@
 """
-Registry of the FULL pool of possible daily achievements. Which ones
-are actually active on a given day is decided by daily.py, not here -
-this is just every achievement eligible to be picked.
+Registry of all daily achievements that could be randomly picked on a new day.
 """
+
+
 
 from .._base import DailyAchievement
 

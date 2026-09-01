@@ -1,9 +1,8 @@
-from .._base import DailyAchievement
-from ...events import AchievementEvent
+from .templates.template_event import TemplateEventAchievement
 
 
 
-class OpenProjects(DailyAchievement):
+class OpenProjects(TemplateEventAchievement):
     ID = "daily_open_projects"
     NAME = "Where Were We?"
     DESC = "Open projects"
@@ -14,18 +13,5 @@ class OpenProjects(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.event_id: str = "file_open"
         self.goal = self.GOAL_VARIANTS[0]
-
-    def triggered(self, event: AchievementEvent) -> None:
-        if event.type != "file_open":
-            return
-
-        self.count += 1
-        if self.count < self.goal:
-            self.save()
-
-        self.unlock()
-
-    def status_text(self) -> str:
-        return f"{self.count}/{self.goal}"

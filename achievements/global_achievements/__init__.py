@@ -1,7 +1,5 @@
 """
-Registry of always-active achievements. To add one: write a new module
-in this package with a GlobalAchievement subclass, then add the class
-here.
+Registry of global achievements.
 """
 
 from .._base import GlobalAchievement

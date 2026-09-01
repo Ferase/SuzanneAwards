@@ -1,9 +1,8 @@
-from .._base import DailyAchievement
-from ...events import AchievementEvent
+from .templates.template_startednop import TempalteStartEndOpAchievement
 
 
 
-class CreateCurves(DailyAchievement):
+class CreateCurves(TempalteStartEndOpAchievement):
     ID = "daily_create_curves"
     NAME = "More Than Mesh"
     DESC = "Create curve objects in Object Mode or Edit Mode"
@@ -14,27 +13,7 @@ class CreateCurves(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.op_startswith: str = "CURVE_"
+        self.op_endswith: str = "_add"
 
-        # Placeholder
         self.goal = self.GOAL_VARIANTS[0]
-
-    def triggered(self, event: AchievementEvent) -> None:
-        if event.type != "operator":
-            return
-
-        if not event.bl_idname.startswith("CURVE_"):
-            return
-
-        if not event.bl_idname.endswith("_add"):
-            return
-
-        self.count += 1
-        if self.count < self.goal:
-            self.save()
-            return
-
-        self.unlock()
-
-    def status_text(self) -> str:
-        return f"{self.count}/{self.goal}"

@@ -5,10 +5,13 @@ import bpy.utils.previews
 
 from . import manager
 from . import exp
+from .achievements._base import AchievementKind
+
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
 
 ICON_FILES = {
-    "unlocked": ("assets", "img", "award.png"),
-    "locked": ("assets", "img", "locked_award.png"),
+    "unlocked": os.path.join(ASSETS_DIR, "img", "default", "award.png"),
+    "locked": os.path.join(ASSETS_DIR, "img", "default", "locked_award.png"),
 }
 
 # bpy.utils.previews.ImagePreviewCollection, populated by _load_icons()
@@ -17,38 +20,31 @@ _icons = None
 
 
 def _load_icons() -> None:
-    """Load the award icons into a preview collection so they can be
-    used as custom icons via icon_value. Deferred to a one-shot timer at
-    register() rather than called directly - matches toast.py's
-    approach, since some Blender data access is unreliable this early
-    in registration."""
+    """Load and cache achievement icons."""
 
     global _icons
 
     pcoll = bpy.utils.previews.new()
-    base_dir = os.path.dirname(__file__)
 
-    for key, relative_path in ICON_FILES.items():
-        path = os.path.join(base_dir, *relative_path)
-        print("ICON PATH", path)
-        if os.path.exists(path):
-            pcoll.load(key, path, 'IMAGE')
-        else:
-            print(f"[ui] Icon not found at {path}, falling back to a builtin icon for '{key}'.")
+    for key, path in ICON_FILES.items():
+        
+        if not os.path.exists(path):
+            print(f"[UI] Icon not found at {path}, falling back to a builtin icon for '{key}'.")
+            continue
+        
+        pcoll.load(key, path, "IMAGE")
 
     _icons = pcoll
 
 def _icon_kwargs_for(instance) -> dict:
-    """Returns the right kwarg (icon_value=... or icon=...) for a
-    template_icon/label call, using the loaded custom icon if available
-    and falling back to a builtin one otherwise."""
+    """Returns the right kwarg (icon_value=... or icon=...) for a template_icon/label call."""
 
     key = "unlocked" if instance.unlocked else "locked"
 
     if _icons is not None and key in _icons:
         return {"icon_value": _icons[key].icon_id}
 
-    return {"icon": 'CHECKMARK' if instance.unlocked else 'LOCKED'}
+    return {"icon": "CHECKMARK" if instance.unlocked else "LOCKED"}
 
 def _draw_achievement_box(layout, instance) -> None:
     """Draw one achievement's box - shared by both the Daily and Global sections."""
@@ -93,22 +89,19 @@ class ACHIEVEMENT_PT_panel(bpy.types.Panel):
             text=f"{exp.exp}/{threshold}",
         )
 
-        # Split instances by kind - KIND is set on GlobalAchievement/
-        # DailyAchievement in achievements/_base.py
+        # Slit achievement instances into their repsective types
         instances = manager.get_instances().values()
-        daily_instances = [i for i in instances if getattr(i, "KIND", None) == "daily"]
-        global_instances = [i for i in instances if getattr(i, "KIND", None) == "global"]
+        daily_instances = [i for i in instances if getattr(i, "KIND", None) == AchievementKind.DAILY]
+        global_instances = [i for i in instances if getattr(i, "KIND", None) == AchievementKind.GLOBAL]
 
-        # Daily Awards - collapsible section. layout.panel() tracks its
-        # own open/closed state per idname, persisted with the UI - no
-        # custom property needed.
+        # Collapsable section for daily achievements
         daily_header, daily_body = layout.panel("suzanne_awards_daily", default_closed=False)
         daily_header.label(text="Daily Awards")
         if daily_body is not None:
             for instance in daily_instances:
                 _draw_achievement_box(daily_body, instance)
 
-        # Global Awards - same pattern
+        # Collapsable section for global achievements
         global_header, global_body = layout.panel("suzanne_awards_global", default_closed=False)
         global_header.label(text="Global Awards")
         if global_body is not None:
@@ -118,6 +111,8 @@ class ACHIEVEMENT_PT_panel(bpy.types.Panel):
 
 
 classes = (ACHIEVEMENT_PT_panel,)
+
+
 
 def register():
     """Register the N-panel."""

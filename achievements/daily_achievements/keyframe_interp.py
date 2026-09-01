@@ -1,9 +1,8 @@
-from .._base import DailyAchievement
-from ...events import AchievementEvent
+from .templates.template_singleop import TemplateSingleOpAchievement
 
 
 
-class KeyframeInterp(DailyAchievement):
+class KeyframeInterp(TemplateSingleOpAchievement):
     ID = "daily_keyframe_interp"
     NAME = "That Feels Right"
     DESC = "Modify the interpolation type of keyframes"
@@ -14,24 +13,5 @@ class KeyframeInterp(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
-
-        # Placeholder
+        self.desired_op: str = "ACTION_OT_interpolation_type"
         self.goal = self.GOAL_VARIANTS[0]
-
-    def triggered(self, event: AchievementEvent) -> None:
-        if event.type != "operator":
-            return
-
-        if event.bl_idname != "ACTION_OT_interpolation_type":
-            return
-
-        self.count += 1
-        if self.count < self.goal:
-            self.save()
-            return
-
-        self.unlock()
-
-    def status_text(self) -> str:
-        return f"{self.count}/{self.goal}"

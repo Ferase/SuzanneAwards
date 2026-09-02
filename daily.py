@@ -66,8 +66,6 @@ def is_active_today(achievement_id: str) -> bool:
 def get_daily_seconds() -> float:
     """Returns how many seconds have passed in the day."""
 
-    global daily_seconds
-
     return daily_seconds
 
 def add_daily_seconds(amount: float) -> None:

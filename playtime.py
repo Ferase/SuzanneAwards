@@ -160,26 +160,28 @@ def _on_process_exit() -> None:
 
 def _tick() -> float:
     """Fires a play time eevent and day rollver event for rerolling daily achievements."""
-
+ 
     global total_seconds, _last_tick_time
-
-    # Get the current time, and store it
+ 
+    # Get the current time
     now = time.time()
-    _last_tick_time = now
-
+ 
     # Check how much time has elapsed since the last tick
     elapsed = now - _last_tick_time
-
+ 
+    # Now it's safe to update the stored tick time for next time
+    _last_tick_time = now
+ 
     # Add elapsed time to total seconds, then save
     total_seconds += elapsed
     save()
-
+ 
     # Force the daily achievements to check the current day and update accordingly
     daily.check_for_new_day()
-
+ 
     # Add daily seconds for daily achievements to use
     daily.add_daily_seconds(elapsed)
-
+ 
     # Emit play time event
     manager.handle_event(AchievementEvent(
         type="playtime",
@@ -188,8 +190,9 @@ def _tick() -> float:
             "daily_seconds": daily.get_daily_seconds(),
         },
     ))
-
+ 
     return TICK_INTERVAL
+
 
 
 

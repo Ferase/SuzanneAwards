@@ -148,39 +148,41 @@ def _emit_startup_event() -> None:
         extra={"streak": current_streak},
     ))
 
-def _on_process_exit() -> None:
-    """Additional safety net to ensure progress is saved on Blender exit."""
-
-    global total_seconds
-
-    # Get the current time and calculate usage seconds, then save
-    now = time.time()
-    total_seconds += now - _last_tick_time
-    save()
-
-def _tick() -> float:
-    """Fires a play time eevent and day rollver event for rerolling daily achievements."""
+def _flush(now: float) -> None:
+    """Adds elapsed time (since _last_tick_time) to BOTH the lifetime
+    total and today's total, and updates _last_tick_time. Used by every
+    code path that can end a tracking interval (a regular tick, an
+    atexit-triggered shutdown, or unregister()) so total_seconds and
+    daily_seconds can never drift apart from each other - previously
+    only _tick() remembered to also call daily.add_daily_seconds(),
+    so any session that ended between two ticks (closing Blender,
+    disabling the addon) leaked that partial interval into total_seconds
+    without crediting it to daily_seconds at all."""
  
     global total_seconds, _last_tick_time
  
-    # Get the current time
-    now = time.time()
- 
-    # Check how much time has elapsed since the last tick
     elapsed = now - _last_tick_time
- 
-    # Now it's safe to update the stored tick time for next time
     _last_tick_time = now
  
-    # Add elapsed time to total seconds, then save
     total_seconds += elapsed
     save()
  
+    daily.add_daily_seconds(elapsed)
+
+def _on_process_exit() -> None:
+    """Additional safety net to ensure progress is saved on Blender exit."""
+
+    _flush(time.time())
+
+def _tick() -> float:
+    """Fires a play time eevent and day rollver event for rerolling daily achievements."""
+
+    now = time.time()
+
     # Force the daily achievements to check the current day and update accordingly
     daily.check_for_new_day()
  
-    # Add daily seconds for daily achievements to use
-    daily.add_daily_seconds(elapsed)
+    _flush(now)
  
     # Emit play time event
     manager.handle_event(AchievementEvent(

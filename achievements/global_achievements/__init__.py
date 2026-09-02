@@ -26,6 +26,9 @@ from .time_used_250h import TimeUsed250H
 from .time_used_500h import TimeUsed500H
 from .time_used_1000h import TimeUsed1000H
 
+# Object Creation
+from .create_objects_1000 import CreateObjects1000
+
 # Nodes
 from .create_nodes_1000 import CreateNodes1000
 
@@ -51,6 +54,9 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
     TimeUsed250H,
     TimeUsed500H,
     TimeUsed1000H,
+
+    # Object Creation
+    CreateObjects1000,
 
     # Nodes
     CreateNodes1000

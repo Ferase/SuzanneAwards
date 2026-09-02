@@ -8,7 +8,7 @@ from ....events import AchievementEvent
 
 
 class TemplateEventAchievement(GlobalAchievement):
-    ID = "daily_tempalte_event"
+    ID = "global_tempalte_event"
     NAME = "[TEMPALTE] Event"
     DESC = "A reusable template for achievements that ony check for a sepcific event."
     EXP = 0

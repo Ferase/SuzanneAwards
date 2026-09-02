@@ -8,7 +8,7 @@ from ....events import AchievementEvent
 
 
 class TemplateMultiOpAchievement(GlobalAchievement):
-    ID = "daily_tempalte_multiop"
+    ID = "global_tempalte_multiop"
     NAME = "[TEMPALTE] Multiple Operators"
     DESC = "A reusable template for multiple possible operator achievements."
     EXP = 0
@@ -21,6 +21,7 @@ class TemplateMultiOpAchievement(GlobalAchievement):
             "operator_id1_here",
             "operator_id2_here"
         ]
+        
         self.goal = 0
 
     def triggered(self, event: AchievementEvent) -> None:

@@ -8,7 +8,7 @@ from ....events import AchievementEvent
 
 
 class TemplateSingleOpAchievement(GlobalAchievement):
-    ID = "daily_tempalte_singelop"
+    ID = "global_tempalte_singelop"
     NAME = "[TEMPALTE] Single Operator"
     DESC = "A reusable template for single operator achievements."
     EXP = 0

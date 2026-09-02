@@ -8,7 +8,7 @@ from ....events import AchievementEvent
 
 
 class TempalteStartEndOpAchievement(GlobalAchievement):
-    ID = "daily_tempalte_startsendsop"
+    ID = "global_tempalte_startsendsop"
     NAME = "[TEMPALTE] Starts with/ends with Operator"
     DESC = "A reusable template for achievements that are seeking operators that start and end with something."
     EXP = 0

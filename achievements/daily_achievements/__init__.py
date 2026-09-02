@@ -27,6 +27,7 @@ from .move_football import MoveFootballFields
 from .rotate_circles import RotateCircles
 from .create_faces import CreateFaces
 from .create_edges import CreateEdges
+from .create_loopcuts import CreateLoopCuts
 from .merge_distance import MergeDistance
 from .delete_faces import DeleteFaces
 from .delete_edges import DeleteEdges
@@ -34,6 +35,7 @@ from .delete_vertices import DeleteVertices
 from .mesh_inset import MeshInset
 from .mesh_spin import MeshSpin
 from .mesh_bevel import MeshBevel
+from .mesh_knife import MeshKnife
 
 # Nodes
 from .create_nodes_compositor import CreateNodesCompositor
@@ -86,6 +88,7 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     RotateCircles,
     CreateFaces,
     CreateEdges,
+    CreateLoopCuts,
     MergeDistance,
     DeleteFaces,
     DeleteEdges,
@@ -93,6 +96,7 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     MeshInset,
     MeshSpin,
     MeshBevel,
+    MeshKnife,
 
     # Nodes
     CreateNodesCompositor,

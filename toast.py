@@ -228,7 +228,10 @@ def show_toast(heading: str, name: str, start_offset: float = 0.0) -> None:
 def _on_unlock(instance: BlenderAchievement, current_level, levels_gained: int):
     """Shows toast on unlock, attached to the manager using manager.add_unlock_listener()."""
 
-    show_toast("You got an award!", instance.NAME)
+    show_toast(
+        "You got an award!",
+        instance.NAME
+    )
 
     if levels_gained:
         heading: str = "You levelled up!"
@@ -236,7 +239,13 @@ def _on_unlock(instance: BlenderAchievement, current_level, levels_gained: int):
         if num_levels_earned > 1:
             heading = f"You earned {num_levels_earned} levels!"
 
-        bpy.app.timers.register(lambda: show_toast(heading, f"Level {current_level}"), first_interval=2.0, persistent=True)
+        bpy.app.timers.register(
+            lambda: show_toast(
+                heading,
+                f"Level {current_level}"),
+                first_interval=2.0,
+                persistent=True
+            )
 
 
 

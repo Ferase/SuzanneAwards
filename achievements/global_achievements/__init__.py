@@ -26,6 +26,9 @@ from .time_used_250h import TimeUsed250H
 from .time_used_500h import TimeUsed500H
 from .time_used_1000h import TimeUsed1000H
 
+# Nodes
+from .create_nodes_1000 import CreateNodes1000
+
 GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
     # General
     DeleteDefaultCube,
@@ -47,5 +50,8 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
     TimeUsed100H,
     TimeUsed250H,
     TimeUsed500H,
-    TimeUsed1000H
+    TimeUsed1000H,
+
+    # Nodes
+    CreateNodes1000
 ]

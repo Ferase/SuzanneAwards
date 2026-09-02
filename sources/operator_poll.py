@@ -51,14 +51,14 @@ POLL_INTERVAL: float = 0.5
 
 
 def _get_selection_median(context: bpy.types.Context):
-    """Returns the median world-space position of the current mesh selection."""
+    """Returns the median world-space position of the current selection."""
 
     # Get the selected object
     obj: bpy.types.Object = context.active_object
     if obj is None:
         return None
 
-    # If in Edit Mode, calculate median of verts
+    # If in Edit Mode on a mesh, calculate median of selected verts
     if obj.mode == "EDIT" and obj.type == "MESH":
         bm: bmesh.types.BMesh = bmesh.from_edit_mesh(obj.data)
 
@@ -69,6 +69,28 @@ def _get_selection_median(context: bpy.types.Context):
 
         # Calculate the median
         local_median = sum((v.co for v in selected), mathutils.Vector()) / len(selected)
+        return obj.matrix_world @ local_median
+
+    if obj.mode == "EDIT" and obj.type == "ARMATURE":
+        points = []
+        for bone in obj.data.edit_bones:
+            if bone.select_head or bone.select:
+                points.append(bone.head)
+            if bone.select_tail or bone.select:
+                points.append(bone.tail)
+
+        if not points:
+            return None
+
+        local_median = sum(points, mathutils.Vector()) / len(points)
+        return obj.matrix_world @ local_median
+
+    if obj.mode == "POSE" and obj.type == "ARMATURE":
+        selected_pose_bones = context.selected_pose_bones
+        if not selected_pose_bones:
+            return None
+
+        local_median = sum((b.head for b in selected_pose_bones), mathutils.Vector()) / len(selected_pose_bones)
         return obj.matrix_world @ local_median
 
     # If in Object Mode, get the median of selected objects' world positions
@@ -178,8 +200,17 @@ def _poll() -> float:
 
         # Emit an event for each operator
         for op in new_ops:
-            # Extract properties
+            # Print operator name
+            print(f"\n{op.bl_idname}")
+
+            print("- Props")
             props = _extract_properties(op.properties)
+            for k, v in props.items():
+                print(f"  - {k}: {v}")
+
+            print("- Extras")
+            for k, v in extra.items():
+                print(f"  - {k}: {v}")
 
             # Draft event
             event = AchievementEvent(

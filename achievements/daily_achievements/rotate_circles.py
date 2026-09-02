@@ -7,7 +7,7 @@ import math
 class RotateCircles(DailyAchievement):
     ID = "daily_rotate_circles"
     NAME = "Dizzy Yet?"
-    DESC = "Rotate objects to add up to {goal_label} full circle rotations"
+    DESC = "Rotate objects or bones to add up to {goal_label} full circle rotations"
     EXP = 30
     TRACKED_FIELDS = ["distance"]
 
@@ -20,6 +20,10 @@ class RotateCircles(DailyAchievement):
     def __init__(self) -> None:
         super().__init__()
         self.distance: float = 0.0
+        self.valid_ops: list[str] = [
+            "TRANSFORM_OT_rotate",
+            "TRANSFORM_OT_trackball"
+        ]
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]
@@ -35,7 +39,7 @@ class RotateCircles(DailyAchievement):
         if event.type != "operator":
             return
 
-        if event.bl_idname != "TRANSFORM_OT_rotate":
+        if event.bl_idname not in self.valid_ops:
             return
 
         self.distance += abs(self._get_distance(event.properties.get("value", 0.0)))

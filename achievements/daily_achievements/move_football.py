@@ -5,7 +5,7 @@ import bpy
 class MoveFootballFields(DailyAchievement):
     ID = "daily_move_football"
     NAME = "Go Long!"
-    DESC = "Move or extrude objects to add up to the length of {goal_label} football fields"
+    DESC = "Move or extrude objects or bones to add up to the length of {goal_label} football fields"
     EXP = 30
     TRACKED_FIELDS = ["distance"]
 
@@ -39,8 +39,6 @@ class MoveFootballFields(DailyAchievement):
             values = event.extra.get("selection_delta", 0.0)
         else:
             return
-
-        print(values)
 
         self.distance += abs(self._get_distance(values))
         if self.distance < self.goal:

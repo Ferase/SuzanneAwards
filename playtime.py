@@ -141,6 +141,8 @@ def _update_login_streak() -> None:
     bpy.app.timers.register(_emit_startup_event, first_interval=0.3)
 
 def _emit_startup_event() -> None:
+    """Emit the startup event."""
+
     global current_streak
 
     manager.handle_event(AchievementEvent(
@@ -149,15 +151,7 @@ def _emit_startup_event() -> None:
     ))
 
 def _flush(now: float) -> None:
-    """Adds elapsed time (since _last_tick_time) to BOTH the lifetime
-    total and today's total, and updates _last_tick_time. Used by every
-    code path that can end a tracking interval (a regular tick, an
-    atexit-triggered shutdown, or unregister()) so total_seconds and
-    daily_seconds can never drift apart from each other - previously
-    only _tick() remembered to also call daily.add_daily_seconds(),
-    so any session that ended between two ticks (closing Blender,
-    disabling the addon) leaked that partial interval into total_seconds
-    without crediting it to daily_seconds at all."""
+    """Add elapsed time to daily and playtime seconds."""
  
     global total_seconds, _last_tick_time
  
@@ -181,7 +175,8 @@ def _tick() -> float:
 
     # Force the daily achievements to check the current day and update accordingly
     daily.check_for_new_day()
- 
+
+    # Flush time
     _flush(now)
  
     # Emit play time event

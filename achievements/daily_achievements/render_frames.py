@@ -40,6 +40,7 @@ class RenderFrames(DailyAchievement):
         self.count += images_rendered
         if self.count < self.goal:
             self.save()
+            return
 
         self.unlock()
 

@@ -71,6 +71,9 @@ def save() -> None:
     with open(get_save_path(), "w") as f:
         json.dump({"level": level, "exp": exp, "exp_total": exp_total}, f, indent=2)
 
+def get_current_level() -> int:
+    return level
+
 def add_exp(amount: int) -> list[int]:
     """Add EXP to the user's current EXP. Level up the user if the EXP exceeds the level threshold, do so for as many levels the user surpasses."""
 
@@ -86,14 +89,14 @@ def add_exp(amount: int) -> list[int]:
     # Get the threshold of EXP for the next level
     threshold = exp_required_for_level(level)
 
-    # If teh EXP is greater than the threshold, continuously subtract the threshold, add levels, and redefine the threshold until the EXP falls below the new threshold
+    # If the EXP is greater than the threshold, continuously subtract the threshold, add levels, and redefine the threshold until the EXP falls below the new threshold
     while exp >= threshold:
         exp -= threshold
         level += 1
         levels_gained.append(level)
         threshold = exp_required_for_level(level)
 
-    # Save teh EXP save file
+    # Save the EXP save file
     save()
     return levels_gained
 

@@ -77,7 +77,7 @@ def get_instances() -> dict:
     return _instances
 
 def add_unlock_listener(func) -> None:
-    """When an achievement unlock is triggered, func(achievement_instance, levels_gained) will be run."""
+    """When an achievement unlock is triggered, func(achievement_instance, current_level, levels_gained) will be run."""
 
     _unlock_listeners.append(func)
 
@@ -111,11 +111,14 @@ def _notify_unlock(instance: BlenderAchievement) -> None:
     """Runs when an achievement meets the criteria to be unlocked. Awards EXP, then runs all unlock listeners."""
 
     # Add EXP and determine levels gained
-    levels_gained = exp.add_exp(instance.EXP)
+    levels_gained: list[str] = exp.add_exp(instance.EXP)
+
+    # Get current level
+    current_level: int = exp.get_current_level()
 
     # Run assigned unlock listeners
     for listener in _unlock_listeners:
-        listener(instance, levels_gained)
+        listener(instance, current_level, levels_gained)
 
     # Redraw N-panel UI
     _tag_redraw()

@@ -164,7 +164,7 @@ def _draw():
         blf.position(font_id, text_x, y + toast_height - header_y_offset, 0)
         blf.size(font_id, header_font_size)
         blf.color(font_id, r1, g1, b1, alpha)
-        blf.draw(font_id, "You got an award!")
+        blf.draw(font_id, toast["heading"])
 
         r2, g2, b2 = accent_color
         blf.position(font_id, text_x, y + name_y_offset, 0)
@@ -209,14 +209,14 @@ def _tag_redraw():
             if area.type == "VIEW_3D":
                 area.tag_redraw()
 
-def show_toast(name: str) -> None:
+def show_toast(heading: str, name: str, start_offset: float = 0.0) -> None:
     """Display a toast."""
 
     # Get the active toasts
     global _active_toasts
 
     # Add to active toasts
-    _active_toasts.append({"name": name, "start": time.time()})
+    _active_toasts.append({"heading": heading, "name": name, "start": time.time() + start_offset})
 
     # Register the toast ticker if it isn't already
     if not bpy.app.timers.is_registered(_tick):
@@ -225,10 +225,18 @@ def show_toast(name: str) -> None:
     # Redraw UI
     _tag_redraw()
 
-def _on_unlock(instance: BlenderAchievement, levels_gained: int):
+def _on_unlock(instance: BlenderAchievement, current_level, levels_gained: int):
     """Shows toast on unlock, attached to the manager using manager.add_unlock_listener()."""
 
-    show_toast(instance.NAME)
+    show_toast("You got an award!", instance.NAME)
+
+    if levels_gained:
+        heading: str = "You levelled up!"
+        num_levels_earned: int = len(levels_gained)
+        if num_levels_earned > 1:
+            heading = f"You earned {num_levels_earned} levels!"
+
+        bpy.app.timers.register(lambda: show_toast(heading, f"Level {current_level}"), first_interval=2.0, persistent=True)
 
 
 

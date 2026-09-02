@@ -27,6 +27,7 @@ class SaveProjectCopies(DailyAchievement):
         self.count += 1
         if self.count < self.goal:
             self.save()
+            return
 
         self.unlock()
 

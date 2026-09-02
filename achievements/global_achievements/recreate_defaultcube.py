@@ -50,6 +50,7 @@ class RecreateDefaultCube(GlobalAchievement):
     def triggered(self, event: AchievementEvent) -> None:
         if event.type == "file_new":
             bpy.app.timers.register(self._reset, first_interval=0.5, persistent=True)
+            return
 
         if self._ineligable:
             return

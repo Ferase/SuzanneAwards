@@ -1,6 +1,6 @@
 from .._base import GlobalAchievement
 from ...events import AchievementEvent
-from ... import daily
+from ... import playtime
 
 
 
@@ -25,6 +25,6 @@ class TimeUsed10H(GlobalAchievement):
             self.unlock()
 
     def status_text(self) -> str:
-        current_hours = daily.get_daily_seconds() / 3600.0
+        current_hours = playtime.total_seconds / 3600.0
         goal_hours = self.goal / 3600.0
         return f"{min(current_hours, goal_hours):.1f}h/{goal_hours:.1f}h"

@@ -6,7 +6,7 @@ import bpy
 
 class CreateNodesShader(DailyAchievement):
     ID = "daily_create_nodes_shader"
-    NAME = "What Are These Strings?"
+    NAME = "Shading Pass"
     DESC = "Create, connect, or disconnect nodes in the Shader Editor"
     EXP = 30
     TRACKED_FIELDS = ["count"]

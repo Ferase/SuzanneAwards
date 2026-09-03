@@ -21,7 +21,7 @@ class TimeUsed10H(GlobalAchievement):
         if event.type != "playtime":
             return
 
-        if event.extra.get("daily_seconds", 0) >= self.goal:
+        if event.extra.get("total_seconds", 0) >= self.goal:
             self.unlock()
 
     def status_text(self) -> str:

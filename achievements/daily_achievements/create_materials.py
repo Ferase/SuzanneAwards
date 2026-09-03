@@ -4,7 +4,7 @@ from .templates.template_singleop import TemplateSingleOpAchievement
 
 class CreateMaterials(TemplateSingleOpAchievement):
     ID = "daily_create_materials"
-    NAME = "Shading Pass"
+    NAME = "More Draw Calls!"
     DESC = "Create new materials"
     EXP = 30
     TRACKED_FIELDS = ["count"]

@@ -89,7 +89,7 @@ class ACHIEVEMENT_PT_panel(bpy.types.Panel):
             text=f"{exp.exp}/{threshold}",
         )
 
-        # Slit achievement instances into their repsective types
+        # Split achievement instances into their repsective types
         instances = manager.get_instances().values()
         daily_instances = [i for i in instances if getattr(i, "KIND", None) == AchievementKind.DAILY]
         global_instances = [i for i in instances if getattr(i, "KIND", None) == AchievementKind.GLOBAL]

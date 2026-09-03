@@ -1,29 +1,27 @@
-from .._base import DailyAchievement
+from .._base import GlobalAchievement
 from ...events import AchievementEvent
 
 
 
-class RenderFrames(DailyAchievement):
-    ID = "daily_render_frames"
-    NAME = "As Much As It Takes"
-    DESC = "Successfully render any number of images as images or movies"
-    EXP = 50
+class Render10000(GlobalAchievement):
+    ID = "global_render_10000"
+    NAME = "Animation Portfolio"
+    DESC = "Render images or movies."
+    EXP = 5000
     TRACKED_FIELDS = ["count"]
-
-    GOAL_VARIANTS = [10, 25, 50]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
-        self.valid_ops: list[str] = [
+        self.count: int = 0
+        self.valid_events: list[str] = [
             "render_complete",
-            "render_cancel",
+            "render_cancel"
         ]
 
-        self.goal = self.GOAL_VARIANTS[0]
+        self.goal = 10_000
 
     def triggered(self, event: AchievementEvent) -> None:
-        if event.type not in self.valid_ops:
+        if event.type not in self.valid_events:
             return
 
         render_format: str = event.extra.get("render_format", "")

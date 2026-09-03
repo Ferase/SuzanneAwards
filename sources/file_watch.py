@@ -80,21 +80,28 @@ def _on_save_post(dummy) -> None:
     # Get current filepath after save
     filepath_after = bpy.data.filepath
 
+    is_copy: bool = False
+    is_new_save: bool = False
+
     # If there's no filepath, then a copy of a new, unsaved project was saved
     if not filepath_after:
         is_copy = True
+        is_new_save = True
 
     # If the filepath before saving is different from the filepath after saving, it was saved normally
     elif filepath_after != _filepath_before_save:
         is_copy = False
+        is_new_save = True
 
     # Otherwise, a copy of a saved project was saved because the time wouldn't have changed.
     else:
         current_mtime = os.path.getmtime(filepath_after) if os.path.exists(filepath_after) else None
-        is_copy = (current_mtime == _mtime_before_save)
+        result: bool = (current_mtime == _mtime_before_save)
+        is_copy = result
+        is_new_save = result
 
     # Emit event
-    manager.handle_event(AchievementEvent(type="file_save", extra={"is_copy": is_copy}))
+    manager.handle_event(AchievementEvent(type="file_save", extra={"is_copy": is_copy, "is_new_save": is_new_save}))
 
 def _on_blend_import_post(dummy) -> None:
     """Fires when the user appends data to the active project file."""

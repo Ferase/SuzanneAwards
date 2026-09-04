@@ -6,7 +6,7 @@ class MeshInset(TemplateSingleOpAchievement):
     ID = "daily_mesh_inset"
     NAME = "Junction"
     DESC = "Use the inset tool on meshes in Edit Mode"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]

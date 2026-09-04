@@ -8,7 +8,7 @@ class CreateLoopCuts(DailyAchievement):
     ID = "daily_create_loopcuts"
     NAME = "Chop It Up!"
     DESC = "Create loop cuts on meshes in Edit Mode"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

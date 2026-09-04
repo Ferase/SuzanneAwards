@@ -9,7 +9,7 @@ class CreateUVUnwrap(DailyAchievement):
     ID = "daily_create_uvunwrap"
     NAME = "3D 2 2D"
     DESC = "UV unwrap some mesh"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

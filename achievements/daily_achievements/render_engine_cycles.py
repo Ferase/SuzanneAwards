@@ -7,7 +7,7 @@ class RenderEngineCycles(RenderEngineEevee):
     ID = "daily_render_engine_cycles"
     NAME = "Slow And Steady"
     DESC = "Successfully complete render jobs with the Cycles engine"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

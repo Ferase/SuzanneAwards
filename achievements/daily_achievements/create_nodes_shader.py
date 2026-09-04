@@ -8,7 +8,7 @@ class CreateNodesShader(DailyAchievement):
     ID = "daily_create_nodes_shader"
     NAME = "Shading Pass"
     DESC = "Create, connect, or disconnect nodes in the Shader Editor"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50]

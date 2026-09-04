@@ -6,7 +6,7 @@ class CreateEdges(DailyAchievement):
     ID = "daily_create_edges"
     NAME = "Connect the Dots"
     DESC = "Create edges"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

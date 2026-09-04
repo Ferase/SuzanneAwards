@@ -7,7 +7,7 @@ class RenderAnimations(DailyAchievement):
     ID = "daily_render_animations"
     NAME = "Make It Dance!"
     DESC = "Successfully complete animation render jobs (2 frames minimum)"
-    EXP = 80
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

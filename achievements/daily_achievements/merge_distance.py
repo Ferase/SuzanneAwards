@@ -7,7 +7,7 @@ class MergeDistance(DailyAchievement):
     ID = "daily_merge_distance"
     NAME = "Sewing"
     DESC = "Merge disconnected meshes by distance in Edit Mode"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]

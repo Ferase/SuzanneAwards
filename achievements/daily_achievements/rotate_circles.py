@@ -8,7 +8,7 @@ class RotateCircles(DailyAchievement):
     ID = "daily_rotate_circles"
     NAME = "Dizzy Yet?"
     DESC = "Rotate objects or bones to add up to {goal_label} full circle rotations"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["distance"]
 
     GOAL_VARIANTS = [

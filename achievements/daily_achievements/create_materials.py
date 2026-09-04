@@ -6,7 +6,7 @@ class CreateMaterials(TemplateSingleOpAchievement):
     ID = "daily_create_materials"
     NAME = "More Draw Calls!"
     DESC = "Create new materials"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]

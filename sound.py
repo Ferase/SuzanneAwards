@@ -22,6 +22,7 @@ DEFAULT_SOUNDS_PATH: str = os.path.join(BASE_SOUNDS_PATH, "default")
 
 DEFAULT_SOUND_UNLOCK: str = os.path.join(DEFAULT_SOUNDS_PATH, "unlock.wav")
 DEFAULT_SOUND_LEVELUP: str = os.path.join(DEFAULT_SOUNDS_PATH, "level_up.wav")
+DEFAULT_SOUND_BOOST: str = os.path.join(DEFAULT_SOUNDS_PATH, "boost.wav")
 
 # Playback device, created lazily on first use
 _device = None
@@ -73,6 +74,12 @@ def play_level_up_sound(current_level: int = 1, levels_gained: int = 1) -> None:
 
     # Play the sound
     _play_sound(DEFAULT_SOUND_LEVELUP)
+
+def play_boost_sound() -> None:
+    """Plays the boost sound."""
+
+    # Play the sound
+    _play_sound(DEFAULT_SOUND_BOOST)
 
 
 

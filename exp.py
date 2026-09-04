@@ -4,9 +4,12 @@ Subsystem for tracking and incrementing the user's EXP as they earn achievements
 
 
 
+import os
 import bpy
 import json
-import os
+from typing import Any
+
+from .achievements._base import BlenderAchievement, AchievementKind
 
 # Required EXP to level up to level 2
 BASE_EXP_TO_LEVEL: int = 100
@@ -26,6 +29,9 @@ exp: int = 0
 # EXP all-time total
 exp_total: int = 0
 
+# Boost multiplier
+daily_boost_multiplier: int = 1
+
 
 
 def exp_required_for_level(lvl: int) -> int:
@@ -43,7 +49,7 @@ def get_save_path() -> str:
 def load() -> None:
     """Load EXP and level from the EXP save file."""
 
-    global level, exp, exp_total
+    global level, exp, exp_total, daily_boost_multiplier
 
     # Get the EXP save file path
     path = get_save_path()
@@ -53,34 +59,59 @@ def load() -> None:
         level = 1
         exp = 0
         exp_total = 0
+        daily_boost_multiplier = 1
         return
 
     # Otherwise, open the save file and get the JSON data
     with open(path, "r") as f:
-        data = json.load(f)
+        data: dict[str, Any] = json.load(f)
 
     # Set the level and EXP
     level = data.get("level", 1)
     exp = data.get("exp", 0)
     exp_total = data.get("exp_total", 0)
+    daily_boost_multiplier = data.get("daily_boost_multiplier", 1)
 
 def save() -> None:
     """Save EXP and level to the EXP save file."""
 
     # Write JSON file
     with open(get_save_path(), "w") as f:
-        json.dump({"level": level, "exp": exp, "exp_total": exp_total}, f, indent=2)
+        json.dump({
+            "level": level,
+            "exp": exp,
+            "exp_total": exp_total,
+            "daily_boost_multiplier": daily_boost_multiplier
+        }, f, indent=2)
 
 def get_current_level() -> int:
     return level
 
-def add_exp(amount: int) -> list[int]:
+def increase_multiplier(amount: int = 1):
+    """Increases the daily boost multiplier."""
+
+    global daily_boost_multiplier
+
+    daily_boost_multiplier += amount
+    save()
+
+def calculate_multiplied_exp(base_amount: int) -> int:
+    return base_amount * daily_boost_multiplier
+
+def add_exp(instance: BlenderAchievement) -> list[int]:
     """Add EXP to the user's current EXP. Level up the user if the EXP exceeds the level threshold, do so for as many levels the user surpasses."""
 
     global level, exp, exp_total
 
     # Initialize a list of levels gained
     levels_gained: list[int] = []
+
+    # Get amount
+    amount: int = instance.EXP
+
+    # If the achievement is a daily achievement, apply the multiplier
+    if instance.KIND == AchievementKind.DAILY:
+        amount = calculate_multiplied_exp(amount)
 
     # Increment EXP counters
     exp += amount

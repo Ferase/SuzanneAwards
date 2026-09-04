@@ -7,7 +7,7 @@ class DeleteFaces(DailyAchievement):
     ID = "daily_delete_faces"
     NAME = "It's Like Popping Balloons!"
     DESC = "Delete or dissolve faces on meshes"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

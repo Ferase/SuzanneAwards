@@ -8,7 +8,7 @@ class SelectObjects(DailyAchievement):
     ID = "daily_select_objects"
     NAME = "Jumping Around"
     DESC = "Select objects"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

@@ -9,7 +9,7 @@ class CreateFaces(DailyAchievement):
     ID = "daily_create_faces"
     NAME = "Patch It Up!"
     DESC = "Fill in holes with faces on meshes"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

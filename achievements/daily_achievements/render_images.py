@@ -7,7 +7,7 @@ class RenderImages(DailyAchievement):
     ID = "daily_render_images"
     NAME = "That's a Keeper!"
     DESC = "Successfully complete image render jobs"
-    EXP = 50
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

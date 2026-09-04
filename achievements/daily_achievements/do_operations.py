@@ -6,7 +6,7 @@ class DoOperations(TemplateEventAchievement):
     ID = "daily_do_operations"
     NAME = "Anything Goes"
     DESC = "Perform general actions"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [50, 100, 200]

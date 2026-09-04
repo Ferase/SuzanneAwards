@@ -7,7 +7,7 @@ class RenderFrames(DailyAchievement):
     ID = "daily_render_frames"
     NAME = "As Much As It Takes"
     DESC = "Successfully render any number of images as images or movies"
-    EXP = 50
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 25, 50]

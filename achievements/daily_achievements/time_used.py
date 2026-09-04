@@ -8,7 +8,7 @@ class TimeUsed(DailyAchievement):
     ID = "daily_time_used"
     NAME = "Blender Time!"
     DESC = "Use Blender for {goal_label}"
-    EXP = 40
+    EXP = 5
 
     GOAL_VARIANTS = [
         (3600, "1 hour"),

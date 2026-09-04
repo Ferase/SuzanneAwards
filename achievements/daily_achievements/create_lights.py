@@ -6,7 +6,7 @@ class CreateLights(TemplateSingleOpAchievement):
     ID = "daily_create_lights"
     NAME = "Shed Some Light"
     DESC = "Create light objects"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]

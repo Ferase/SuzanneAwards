@@ -10,9 +10,12 @@ from . import state
 from . import daily
 from . import exp
 from .events import AchievementEvent
-from .achievements._base import BlenderAchievement
+from .achievements._base import BlenderAchievement, GlobalAchievement, DailyAchievement, AchievementKind
 from .achievements.global_achievements import GLOBAL_ACHIEVEMENT_CLASSES
 from .achievements.daily_achievements import DAILY_ACHIEVEMENT_CLASSES
+
+# Enable debug mode
+DEBUG: bool = False
 
 # Track achievements and listeners
 _instances: dict[str, BlenderAchievement] = {}
@@ -95,6 +98,42 @@ def handle_event(event: AchievementEvent) -> None:
         # Otherwise, run progression logic
         instance.triggered(event)
 
+def set_unlocked_global(unlock: bool) -> None:
+    """(DEBUG) Unlocks all global achievements."""
+
+    global_achievements: list[GlobalAchievement] = [instance for instance in _instances.values() if instance.KIND == AchievementKind.GLOBAL]
+
+    for instance in global_achievements:
+        if instance.unlocked == unlock:
+            continue
+
+        if unlock:
+            instance.unlock()
+            continue
+
+        instance.lock()
+
+def set_unlocked_daily(unlock: bool) -> None:
+    """(DEBUG) Unlocks all currently active daily achievements."""
+
+    daily_achievements: list[DailyAchievement] = [instance for instance in _instances.values() if instance.ID in daily.active_ids.keys()]
+
+    for instance in daily_achievements:
+        if instance.unlocked == unlock:
+            continue
+
+        if unlock:
+            instance.unlock()
+            continue
+
+        instance.lock()
+
+def set_unlocked_all(unlock: bool) -> None:
+    """(DEBUG) Unlocks all global achievements and currently active daily achievements."""
+
+    set_unlocked_global(unlock)
+    set_unlocked_daily(unlock)
+
 def _persist(instance: BlenderAchievement) -> None:
     """Save achievement progress and redraw N-panel data for that achievement."""
 
@@ -110,8 +149,9 @@ def _persist(instance: BlenderAchievement) -> None:
 def _notify_unlock(instance: BlenderAchievement) -> None:
     """Runs when an achievement meets the criteria to be unlocked. Awards EXP, then runs all unlock listeners."""
 
-    # Add EXP and determine levels gained
-    levels_gained: list[str] = exp.add_exp(instance.EXP)
+    # Add EXP (add_exp reads instance.EXP and instance.KIND itself, to
+    # apply the daily boost multiplier when relevant) and determine levels gained
+    levels_gained: list[str] = exp.add_exp(instance)
 
     # Get current level
     current_level: int = exp.get_current_level()

@@ -7,7 +7,7 @@ class RenderEngineEevee(DailyAchievement):
     ID = "daily_render_engine_eevee"
     NAME = "Quick And Clean"
     DESC = "Successfully complete render jobs with the EEVEE engine"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

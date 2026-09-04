@@ -7,7 +7,7 @@ class SaveProjectCopies(DailyAchievement):
     ID = "dail_save_projectcopies"
     NAME = "Savestate!"
     DESC = "Save copies of projects"
-    EXP = 10
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

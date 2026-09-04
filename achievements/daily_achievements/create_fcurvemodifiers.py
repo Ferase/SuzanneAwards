@@ -6,7 +6,7 @@ class CreateFCurveModifiers(TemplateSingleOpAchievement):
     ID = "daily_create_fcurvemodifiers"
     NAME = "Add It To the Mix"
     DESC = "Add F-curve modifiers to animated objects' transforms or attributes"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5, 10]

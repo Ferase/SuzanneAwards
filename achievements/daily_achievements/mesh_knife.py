@@ -6,7 +6,7 @@ class MeshKnife(TemplateSingleOpAchievement):
     ID = "daily_mesh_knife"
     NAME = "Slice and Dice"
     DESC = "Use the knife tool on meshes in Edit Mode"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

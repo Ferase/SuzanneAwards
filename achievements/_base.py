@@ -19,10 +19,14 @@ from enum import Enum, auto
 
 
 class AchievementKind(Enum):
+    INVALID = auto()
     GLOBAL = auto()
     DAILY = auto()
 
 class BlenderAchievement:
+    # Acjievement Kind
+    KIND: AchievementKind.INVALID
+
     # Achievement ID
     ID: str = ""
 
@@ -95,6 +99,17 @@ class BlenderAchievement:
         # Run all arbitrary unlock functions linked to self._on_unlock
         if self._on_unlock:
             self._on_unlock(self)
+
+    def lock(self) -> None:
+        """Locks the achievement. Mainly used for debugging."""
+
+        # If the achievement is already locked, do nothing
+        if not self.unlocked:
+            return
+
+        # Set the achievement state as locked and save it
+        self.unlocked = False
+        self.save()
 
     def triggered(self, event) -> None:
         """Called when a source triggers the achievement. This is where progression logic is handled."""

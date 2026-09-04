@@ -6,7 +6,7 @@ class MoveFootballFields(DailyAchievement):
     ID = "daily_move_football"
     NAME = "Go Long!"
     DESC = "Move or extrude objects or bones to add up to the length of {goal_label} football fields"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["distance"]
 
     GOAL_VARIANTS = [

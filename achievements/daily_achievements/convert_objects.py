@@ -6,7 +6,7 @@ class ConvertObjects(TemplateSingleOpAchievement):
     ID = "daily_convert_objects"
     NAME = "Metamorphosis"
     DESC = "Convert objects to another type"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

@@ -7,7 +7,7 @@ class SaveProjects(DailyAchievement):
     ID = "dail_save_projects"
     NAME = "Lock It In"
     DESC = "Save projects"
-    EXP = 10
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

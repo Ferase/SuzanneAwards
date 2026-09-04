@@ -6,7 +6,7 @@ class CreateModifiers(TemplateSingleOpAchievement):
     ID = "daily_create_amodifiers"
     NAME = "Nondestructive Modelling"
     DESC = "Add modifiers to objects"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]

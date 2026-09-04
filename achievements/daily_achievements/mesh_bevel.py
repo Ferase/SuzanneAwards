@@ -6,7 +6,7 @@ class MeshBevel(TemplateSingleOpAchievement):
     ID = "daily_mesh_bevel"
     NAME = "Rounding Out"
     DESC = "Use the bevel function on meshes in Edit Mode"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 25]

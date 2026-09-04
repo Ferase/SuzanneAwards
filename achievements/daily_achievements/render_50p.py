@@ -7,7 +7,7 @@ class Render50P(DailyAchievement):
     ID = "daily_render_50p"
     NAME = "I'll Make My Own Proxies!"
     DESC = "Successfully complete a render job at a resolution scale below 100%"
-    EXP = 50
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

@@ -6,7 +6,7 @@ class CreateArmatures(TemplateSingleOpAchievement):
     ID = "daily_create_armatures"
     NAME = "It's Alive!"
     DESC = "Create armature objects"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]

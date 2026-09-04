@@ -7,7 +7,7 @@ class DeleteVertices(DailyAchievement):
     ID = "daily_delete_vertices"
     NAME = "Break It Down"
     DESC = "Delete or dissolve vertices on meshes"
-    EXP = 30
+    EXP = 5
     TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]

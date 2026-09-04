@@ -43,7 +43,7 @@ def _on_load_post(dummy) -> None:
 
     # Skip once
     if _first_startup == False:
-        _first_startup == True
+        _first_startup = True
         return
 
     # If a filepath is specified, we have opened a file

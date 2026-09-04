@@ -132,6 +132,9 @@ def unregister():
     if bpy.app.timers.is_registered(_load_icons):
         bpy.app.timers.unregister(_load_icons)
 
-    if _icons is not None:
-        bpy.utils.previews.remove(_icons)
-        _icons = None
+    try:
+        if _icons is not None:
+            bpy.utils.previews.remove(_icons)
+            _icons = None
+    except UnboundLocalError:
+        pass

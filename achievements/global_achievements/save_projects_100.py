@@ -6,7 +6,7 @@ class SaveProjects100(SaveProjects50):
     ID = "global_save_projects_100"
     NAME = "Budding Catalogue"
     DESC = "Save unique projects"
-    EXP = 500
+    EXP = 250
 
     def __init__(self) -> None:
         super().__init__()

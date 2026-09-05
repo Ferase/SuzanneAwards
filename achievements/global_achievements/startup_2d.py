@@ -8,7 +8,7 @@ class Startup2D(GlobalAchievement):
     ID = "global_startup_2d"
     NAME = "Back Again"
     DESC = "Open Blender on 2 consecutive days"
-    EXP = 25
+    EXP = 30
 
     def __init__(self) -> None:
         super().__init__()

@@ -7,7 +7,7 @@ class CreateObjects1000(GlobalAchievement):
     ID = "global_create_objects_1000"
     NAME = "That's A Lot Of Cubes"
     DESC = "Create objects in the 3D View."
-    EXP = 1000
+    EXP = 500
     TRACKED_FIELDS = ["count"]
 
     def __init__(self) -> None:

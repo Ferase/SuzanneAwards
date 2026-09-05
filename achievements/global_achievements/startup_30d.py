@@ -7,7 +7,7 @@ class Startup30D(Startup2D):
     ID = "global_startup_30d"
     NAME = "Part of the Routine"
     DESC = "Open Blender at least once a day consecutively for 1 month"
-    EXP = 750
+    EXP = 500
 
     def __init__(self) -> None:
         super().__init__()

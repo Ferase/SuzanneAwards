@@ -7,7 +7,7 @@ class SaveProjects50(GlobalAchievement):
     ID = "global_save_projects_50"
     NAME = "My Catalogue"
     DESC = "Save unique projects"
-    EXP = 250
+    EXP = 125
     TRACKED_FIELDS = ["count"]
 
     def __init__(self) -> None:

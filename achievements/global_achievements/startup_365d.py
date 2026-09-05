@@ -7,7 +7,7 @@ class Startup365D(Startup2D):
     ID = "global_startup_365d"
     NAME = "One of Many To Come"
     DESC = "Open Blender at least once a day consecutively for 1 year"
-    EXP = 10_000
+    EXP = 2500
 
     def __init__(self) -> None:
         super().__init__()

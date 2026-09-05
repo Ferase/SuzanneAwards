@@ -7,7 +7,7 @@ class Render10000(GlobalAchievement):
     ID = "global_render_10000"
     NAME = "Animation Portfolio"
     DESC = "Render images or movies."
-    EXP = 5000
+    EXP = 2500
     TRACKED_FIELDS = ["count"]
 
     def __init__(self) -> None:

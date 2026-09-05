@@ -7,7 +7,7 @@ class Modes1000(TemplateMultiOpAchievement):
     ID = "global_mode_1000"
     NAME = "Seat Switcher"
     DESC = "Switch modes in the 3D View"
-    EXP = 1000
+    EXP = 500
 
     def __init__(self) -> None:
         super().__init__()

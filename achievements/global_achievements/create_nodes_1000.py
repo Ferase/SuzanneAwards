@@ -6,7 +6,7 @@ class CreateNodes1000(TemplateMultiOpAchievement):
     ID = "global_create_nodes_1000"
     NAME = "What Are These Strings?"
     DESC = "Create, connect, or disconnect nodes across all node editors"
-    EXP = 1000
+    EXP = 500
 
     def __init__(self) -> None:
         super().__init__()

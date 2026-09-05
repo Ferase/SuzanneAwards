@@ -6,7 +6,7 @@ class SaveProjects1000(SaveProjects50):
     ID = "global_save_projects_1000"
     NAME = "Mountainous Catalogue"
     DESC = "Save unique projects"
-    EXP = 5000
+    EXP = 2500
 
     def __init__(self) -> None:
         super().__init__()

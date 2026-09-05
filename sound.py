@@ -10,7 +10,7 @@ import aud
 import os
 
 from . import manager
-from .achievements._base import BlenderAchievement
+from .achievements._base import BlenderAchievement, AchievementKind
 from . import preferences
 
 
@@ -20,7 +20,8 @@ ASSETS_DIR: str = os.path.join(os.path.dirname(__file__), "assets")
 BASE_SOUNDS_PATH: str = os.path.join(ASSETS_DIR, "wav")
 DEFAULT_SOUNDS_PATH: str = os.path.join(BASE_SOUNDS_PATH, "default")
 
-DEFAULT_SOUND_UNLOCK: str = os.path.join(DEFAULT_SOUNDS_PATH, "unlock.wav")
+DEFAULT_SOUND_UNLOCK_DAILY: str = os.path.join(DEFAULT_SOUNDS_PATH, "unlock_daily.wav")
+DEFAULT_SOUND_UNLOCK_GLOBAL: str = os.path.join(DEFAULT_SOUNDS_PATH, "unlock_global.wav")
 DEFAULT_SOUND_LEVELUP: str = os.path.join(DEFAULT_SOUNDS_PATH, "level_up.wav")
 DEFAULT_SOUND_BOOST: str = os.path.join(DEFAULT_SOUNDS_PATH, "boost.wav")
 
@@ -51,15 +52,18 @@ def _play_sound(path: str) -> None:
     # Set the volume
     handle.volume = preferences.get_prefs().volume
 
-def play_unlock_sound(achievement_id: str = "", current_level: int = 0, levels_gained: int = 0) -> None:
+def play_unlock_sound(achievement_id: str = "", achievement_kind: AchievementKind = AchievementKind.GLOBAL, current_level: int = 0, levels_gained: int = 0) -> None:
     """Plays the achievement unlock sound. If a custom unlock sound exists, play that instead."""
 
     # Check if the achievement has a custom unlock sound
-    path: str = DEFAULT_SOUND_UNLOCK
+    path: str = DEFAULT_SOUND_UNLOCK_GLOBAL
     if achievement_id:
         new_path = os.path.join(BASE_SOUNDS_PATH, f"{achievement_id}.wav")
         if os.path.exists(new_path):
             path = new_path
+        else:
+            if achievement_kind == AchievementKind.DAILY:
+                path = DEFAULT_SOUND_UNLOCK_DAILY
 
     # Play the sound
     _play_sound(path)
@@ -86,7 +90,7 @@ def play_boost_sound() -> None:
 def _on_unlock(instance: BlenderAchievement, current_level: int, levels_gained: int) -> None:
     """Plays the unlock chime, attached to the manager using manager.add_unlock_listener()."""
 
-    play_unlock_sound(instance.ID, current_level, levels_gained)
+    play_unlock_sound(instance.ID, instance.KIND, current_level, levels_gained)
 
 def _on_level_up(current_level: int, levels_gained: int) -> None:
     """Plays a level up chime, attached to the manager using manager.add_level_up_listener()."""

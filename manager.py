@@ -79,6 +79,15 @@ def get_instances() -> dict:
 
     return _instances
 
+def get_instance_from_id(id: str) -> BlenderAchievement | None:
+    """Get an achievement instance fron its ID"""
+
+    # Get proper list of achievements
+    achievements: list[BlenderAchievement] = [instance for instance in _instances.values() if instance.KIND == AchievementKind.GLOBAL]
+    achievements.extend([instance for instance in _instances.values() if instance.ID in daily.active_ids.keys()])
+
+    return next((instance for instance in achievements if instance.ID == id), None)
+
 def add_unlock_listener(func) -> None:
     """When an achievement unlock is triggered, func(achievement_instance, current_level, levels_gained) will be run."""
 

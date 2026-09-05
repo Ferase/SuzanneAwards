@@ -62,6 +62,30 @@ def _get_theme_colors():
     normal = ui_theme.wcol_text.text[:3]
     return accent, normal
 
+def _get_n_panel_width(context: bpy.types.Context) -> float:
+    """Returns the current width of the 3D viewport's N-panel (the 'UI'
+    region), or 0.0 if it's closed or can't be found.
+
+    The N-panel isn't a separate region that shrinks the main viewport -
+    it floats on top of it, drawn after the WINDOW region we draw the
+    toast in. So region.width in _draw() stays full-width regardless of
+    whether the N-panel is open, and doesn't help us avoid it - we have
+    to look up the sidebar's own region directly from the area to know
+    how much space it's actually occupying right now.
+
+    A closed sidebar still exists in area.regions, but reports a
+    width of 1 rather than 0 - treated as "closed" here."""
+
+    area = context.area
+    if area is None:
+        return 0.0
+
+    for region in area.regions:
+        if region.type == 'UI':
+            return float(region.width) if region.width > 1 else 0.0
+
+    return 0.0
+
 def _load_icon() -> None:
     """Load tha icon for the achievement."""
 
@@ -103,6 +127,11 @@ def _draw():
     scale = _get_ui_scale()
     accent_color, normal_color = _get_theme_colors()
 
+    # Shift left by however much space the N-panel is currently taking
+    # up, so the toast never ends up drawn underneath it. Read fresh
+    # every draw call - resizing the sidebar takes effect immediately.
+    n_panel_width = _get_n_panel_width(bpy.context)
+
     toast_width = BASE_TOAST_WIDTH * scale
     toast_height = BASE_TOAST_HEIGHT * scale
     margin = BASE_MARGIN * scale
@@ -125,7 +154,7 @@ def _draw():
             continue
 
         alpha = _compute_alpha(elapsed)
-        x = region.width - toast_width - margin
+        x = region.width - toast_width - margin - n_panel_width
 
         verts = (
             (x, y), (x + toast_width, y),

@@ -95,13 +95,11 @@ def _on_unlock(instance: BlenderAchievement, current_level: int, levels_gained: 
 def _pick_levelup_sound(current_level: int) -> str:
     """Picks which level up sound to play based on the player's level."""
 
-    max_sounds: int = len(os.listdir(LEVELUP_SOUNDS_PATH))
-
     level_normalized: int = current_level % 100
 
     sound_level: int = 5
     if level_normalized > 0:
-        sound_level = min(max(1, (level_normalized // 25) + 1), max_sounds)
+        sound_level = min(max(1, (level_normalized // 25) + 1), 5)
 
     sound_level_str: str = str(sound_level).zfill(2)
 

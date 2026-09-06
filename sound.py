@@ -97,7 +97,12 @@ def _pick_levelup_sound(current_level: int) -> str:
 
     max_sounds: int = len(os.listdir(LEVELUP_SOUNDS_PATH))
 
-    sound_level: int = min(max(1, (current_level // 25) + 1), max_sounds)
+    level_normalized: int = current_level % 100
+
+    sound_level: int = 5
+    if level_normalized > 0:
+        sound_level = min(max(1, (level_normalized // 25) + 1), max_sounds)
+
     sound_level_str: str = str(sound_level).zfill(2)
 
     sound_name: str = "_".join(["level", "up", sound_level_str])

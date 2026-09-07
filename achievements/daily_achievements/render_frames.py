@@ -46,4 +46,4 @@ class RenderFrames(DailyAchievement):
         self.unlock()
 
     def status_text(self) -> str:
-        return f"{self.count}/{self.goal}"
+        return f"{self.count:,}/{self.goal:,}"

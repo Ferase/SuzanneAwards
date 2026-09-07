@@ -8,6 +8,7 @@ from . import exp
 from . import daily
 from . import toast
 from . import sound
+from . import playtime
 from .achievements._base import AchievementKind
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
@@ -247,14 +248,19 @@ class SUZANNEAWARDS_PT_panel(bpy.types.Panel):
         layout = self.layout
 
         # EXP/level header
-        threshold = exp.exp_required_for_level(exp.level)
+        threshold: int = exp.exp_required_for_level(exp.level)
         header = layout.box()
-        header.label(text=f"Level {exp.level}")
+        header.label(text=f"Level {exp.level:,}")
         header.label(text=f"Your current rank is: {_get_rank_text()}")
         header.progress(
             factor=exp.get_progress_fraction(),
-            text=f"{exp.exp}/{threshold}",
+            text=f"{exp.exp:,}/{threshold:,}",
         )
+
+        header.separator()
+
+        streak: int = playtime.get_current_streak()
+        header.label(text=f"Current startup streak: {streak:,} " + "day" if streak == 1 else "days")
 
         header.separator()
 

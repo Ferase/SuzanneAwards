@@ -30,4 +30,4 @@ class TimeUsed(DailyAchievement):
     def status_text(self) -> str:
         current_hours = daily.get_daily_seconds() / 3600.0
         goal_hours = self.goal / 3600.0
-        return f"{min(current_hours, goal_hours):.1f}h/{goal_hours:.1f}h"
+        return f"{min(current_hours, goal_hours):,.1f}h/{goal_hours:,.1f}h"

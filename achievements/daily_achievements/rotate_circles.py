@@ -50,4 +50,4 @@ class RotateCircles(DailyAchievement):
         self.unlock()
 
     def status_text(self) -> str:
-        return f"{round(self.distance)}°/{self.goal}°"
+        return f"{round(self.distance):,}°/{self.goal:,}°"

@@ -48,4 +48,4 @@ class MoveFootballFields(DailyAchievement):
         self.unlock()
 
     def status_text(self) -> str:
-        return f"{round(self.distance)} m/{self.goal} m"
+        return f"{round(self.distance):,} m/{self.goal:,} m"

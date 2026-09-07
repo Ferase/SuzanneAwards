@@ -208,7 +208,7 @@ def _show_levelup_toast(current_level: int = 1) -> None:
 
     toast.show_levelup_toast(
         "Congratulations!",
-        f"You reached level {current_level}!",
+        f"You reached level {current_level:,}!",
         current_level
     )
     sound.play_level_up_sound()

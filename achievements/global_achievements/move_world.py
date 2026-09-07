@@ -1,32 +1,26 @@
-from .._base import DailyAchievement
+from .._base import GlobalAchievement
 from ...events import AchievementEvent
 import bpy
 
-class MoveFootballFields(DailyAchievement):
-    ID = "daily_move_football"
-    NAME = "Go Long!"
-    DESC = "Move or extrude objects or bones to add up to the length of {goal_label} football fields"
-    EXP = 5
+class MoveWorld(GlobalAchievement):
+    ID = "global_move_world"
+    NAME = "Around the World"
+    DESC = "Move or extrude objects or bones to add up to the circumference of earth."
+    EXP = 5000
     TRACKED_FIELDS = ["distance"]
-
-    GOAL_VARIANTS = [
-        (1100, "10"),
-        (2750, "25"),
-        (5500, "50")
-    ]
 
     def __init__(self) -> None:
         super().__init__()
         self.distance: float = 0.0
 
         # Placeholder
-        self.goal = self.GOAL_VARIANTS[0]
+        self.goal = 40_075
 
     def _get_distance(self, translation_distance: float | tuple[float, ...]) -> int:
         if isinstance(translation_distance, tuple):
             translation_distance = sum(translation_distance)
 
-        return translation_distance
+        return translation_distance * 0.001
 
     def triggered(self, event: AchievementEvent) -> None:
         if event.type != "operator":
@@ -48,7 +42,7 @@ class MoveFootballFields(DailyAchievement):
         self.unlock()
 
     def status_text(self) -> str:
-        return f"{round(self.distance):,} m/{self.goal:,} m"
+        return f"{self.distance:,.1f} km/{self.goal:,.1f} km"
 
     def get_progress_fraction(self):
         return self.distance / self.goal if self.goal > 0 else 0.0

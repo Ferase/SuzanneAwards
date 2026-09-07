@@ -31,3 +31,6 @@ class TimeUsed(DailyAchievement):
         current_hours = daily.get_daily_seconds() / 3600.0
         goal_hours = self.goal / 3600.0
         return f"{min(current_hours, goal_hours):,.1f}h/{goal_hours:,.1f}h"
+
+    def get_progress_fraction(self):
+        return daily.get_daily_seconds() / self.goal if self.goal > 0 else 0.0

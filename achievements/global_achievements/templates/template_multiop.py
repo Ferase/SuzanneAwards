@@ -40,3 +40,6 @@ class TemplateMultiOpAchievement(GlobalAchievement):
 
     def status_text(self) -> str:
         return f"{self.count:,}/{self.goal:,}"
+
+    def get_progress_fraction(self):
+        return self.count / self.goal if self.goal > 0 else 0.0

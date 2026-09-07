@@ -25,3 +25,6 @@ class Startup2D(GlobalAchievement):
         progress: int = min(playtime.get_current_streak(), self.goal)
         progress_days_text: str = "day" if progress == 1 else "days"
         return f"{progress:,} {progress_days_text}/{self.goal:,} days"
+
+    def get_progress_fraction(self):
+        return playtime.get_current_streak() / self.goal if self.goal > 0 else 0.0

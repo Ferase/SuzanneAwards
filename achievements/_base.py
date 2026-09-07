@@ -117,7 +117,9 @@ class BlenderAchievement:
         raise NotImplementedError
 
     def status_text(self) -> str:
-        """Handles how the progression for the achievement is displayed on the achievement in the N-panel menu. Any achievements that track a count will override this and pass the display format."""
+        """Handles how the progression for the achievement is displayed on the achievement in the N-panel menu. Any achievements that track a count will override this and pass the display format.
+        
+        Handled by individual achievements."""
 
         return ""
 
@@ -127,6 +129,13 @@ class BlenderAchievement:
         Used by Daily achievements to replace placeholder text in an achievement's description depending on the random goal selected. Always returns the normal description otherwise."""
 
         return self.DESC
+
+    def get_progress_fraction(self) -> float:
+        """Gets the current progress of the achievement in a normalized 0.0-1.0 format, used for progress bars.
+        
+        Handled by individual achievements."""
+
+        return 0.0
 
 
 

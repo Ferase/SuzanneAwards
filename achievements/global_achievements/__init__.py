@@ -21,6 +21,9 @@ from .startup_365d import Startup365D
 # Object Creation
 from .create_objects_1000 import CreateObjects1000
 
+# Object Editing
+from .move_world import MoveWorld
+
 # Nodes
 from .create_nodes_1000 import CreateNodes1000
 
@@ -59,6 +62,9 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
 
     # Object Creation
     CreateObjects1000,
+
+    # Object Editing
+    MoveWorld,
 
     # Nodes
     CreateNodes1000,

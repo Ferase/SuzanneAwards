@@ -9,7 +9,7 @@ from . import daily
 from . import toast
 from . import sound
 from . import playtime
-from .achievements._base import AchievementKind
+from .achievements._base import BlenderAchievement, AchievementKind
 
 ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
 
@@ -65,7 +65,7 @@ def _icon_kwargs_for(instance) -> dict:
 
     return {"icon": "CHECKMARK" if instance.unlocked else "LOCKED"}
 
-def _draw_achievement_box(layout, instance) -> None:
+def _draw_achievement_box(layout: bpy.types.UILayout, instance: BlenderAchievement) -> None:
     """Draw one achievement's box - shared by both the Daily and Global sections."""
 
     box = layout.box()
@@ -84,7 +84,10 @@ def _draw_achievement_box(layout, instance) -> None:
 
     status = instance.status_text()
     if status:
-        text_col.label(text=status)
+        text_col.progress(
+            factor=instance.get_progress_fraction(),
+            text=status
+        )
 
 
 def _draw_daily_complete_popup(self, context: bpy.types.Context) -> None:

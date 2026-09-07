@@ -27,7 +27,7 @@ DEFAULT_SOUND_BOOST: str = os.path.join(DEFAULT_SOUNDS_PATH, "boost.wav")
 
 # Playback device, created lazily on first use
 _device = None
-_levelup_queue: int = 0
+_handle = None
 
 
 
@@ -44,14 +44,16 @@ def _get_device() -> None:
     return _device
 
 def _play_sound(path: str) -> None:
+    global _handle
+
     # Load the sound
     sound = aud.Sound(path)
 
     # Play through the device
-    handle = _get_device().play(sound)
+    _handle = _get_device().play(sound)
 
     # Set the volume
-    handle.volume = preferences.get_prefs().volume
+    _handle.volume = preferences.get_prefs().volume
 
 def play_unlock_sound(achievement_id: str = "", achievement_kind: AchievementKind = AchievementKind.GLOBAL, current_level: int = 0, levels_gained: int = 0) -> None:
     """Plays the achievement unlock sound. If a custom unlock sound exists, play that instead."""
@@ -69,36 +71,13 @@ def play_unlock_sound(achievement_id: str = "", achievement_kind: AchievementKin
     # Play the sound
     _play_sound(path)
 
-    if levels_gained:
-        _queue_levelup(current_level)
-
-def _queue_levelup(current_level: int) -> None:
-    global _levelup_queue
-
-    if current_level < _levelup_queue:
-        return
-
-    _levelup_queue = current_level
-
-    bpy.app.timers.register(
-        lambda: play_level_up_sound(current_level),
-        first_interval=2.0,
-        persistent=True
-    )
-
 def play_level_up_sound(current_level: int = 1) -> None:
     """Plays the level up sound."""
-
-    global _levelup_queue
-
-    if current_level < _levelup_queue:
-        return
 
     path: str = _pick_levelup_sound(current_level)
 
     # Play the sound
     _play_sound(path)
-    _levelup_queue = 0
 
 def play_boost_sound() -> None:
     """Plays the boost sound."""
@@ -107,11 +86,6 @@ def play_boost_sound() -> None:
     _play_sound(DEFAULT_SOUND_BOOST)
 
 
-
-def _on_unlock(instance: BlenderAchievement, current_level: int, levels_gained: int) -> None:
-    """Plays the unlock chime, attached to the manager using manager.add_unlock_listener()."""
-
-    play_unlock_sound(instance.ID, instance.KIND, current_level, levels_gained)
 
 def _pick_levelup_sound(current_level: int) -> str:
     """Picks which level up sound to play based on the player's level."""
@@ -127,12 +101,20 @@ def _pick_levelup_sound(current_level: int) -> str:
     sound_name: str = "_".join(["level", "up", sound_level_str])
     return os.path.join(LEVELUP_SOUNDS_PATH, f"{sound_name}.wav")
 
+def stop_sounds() -> None:
+    global _handle
+
+    if not _handle:
+        return
+
+    _handle.stop()
+
 
 
 def register():
     """Register the sound cue's unlock listener."""
 
-    manager.add_unlock_listener(_on_unlock)
+    pass
 
 def unregister():
     """Release the playback device."""

@@ -371,37 +371,6 @@ def show_levelup_toast(top_text: str, bottom_text: str, current_level: int, star
 
     _tag_redraw()
 
-def _on_unlock(instance: BlenderAchievement, current_level, levels_gained: int):
-    """Shows toast on unlock, attached to the manager using manager.add_unlock_listener()."""
-
-    show_toast(
-        "You got an award!",
-        instance.NAME
-    )
-
-    if levels_gained:
-        _on_levelup(current_level)
-
-def _on_levelup(current_level: int) -> None:
-    """A queue for level up that cancels outdated level ups if the user earns multiple achievements at once that grant them enough EXP to level up both times."""
-
-    global _levelup_queue
-
-    if current_level < _levelup_queue:
-        return
-
-    _levelup_queue = current_level
-
-    bpy.app.timers.register(
-        lambda: show_levelup_toast(
-            "Congratulations!",
-            f"You reached level {current_level}!",
-            current_level
-        ),
-        first_interval=2.0,
-        persistent=True
-    )
-
 
 
 def register():
@@ -415,8 +384,6 @@ def register():
 
     # Deferred - see _load_icons() docstring
     bpy.app.timers.register(_load_icons, first_interval=0.0, persistent=True)
-
-    manager.add_unlock_listener(_on_unlock)
 
 def unregister():
     """Unregister the toast and its shaders."""

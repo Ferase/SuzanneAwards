@@ -13,7 +13,6 @@ import os
 from . import manager
 from . import state
 from . import exp
-from .events import AchievementEvent
 from .achievements._base import BlenderAchievement
 from .achievements.daily_achievements import DAILY_ACHIEVEMENT_CLASSES
 
@@ -224,11 +223,6 @@ def load() -> None:
     # above was taken
     check_for_new_day()
 
-    # This must also run regardless of which branch was taken above -
-    # previously this was only reached on the "save file already
-    # exists" path, so on a brand new install (no save file yet) the
-    # listener never got registered at all, and daily-completion
-    # detection silently never worked for that first session
     manager.add_unlock_listener(_check_todays_progress)
 
 def save() -> None:

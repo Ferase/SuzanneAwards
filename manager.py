@@ -9,6 +9,8 @@ import bpy
 from . import state
 from . import daily
 from . import exp
+from . import toast
+from . import sound
 from .events import AchievementEvent
 from .achievements._base import BlenderAchievement, GlobalAchievement, DailyAchievement, AchievementKind
 from .achievements.global_achievements import GLOBAL_ACHIEVEMENT_CLASSES
@@ -20,6 +22,7 @@ DEBUG: bool = False
 # Track achievements and listeners
 _instances: dict[str, BlenderAchievement] = {}
 _unlock_listeners = []
+_levelup_queue: int = 0
 
 
 
@@ -169,8 +172,50 @@ def _notify_unlock(instance: BlenderAchievement) -> None:
     for listener in _unlock_listeners:
         listener(instance, current_level, levels_gained)
 
+    _handle_toast(instance, current_level, levels_gained)
+
     # Redraw N-panel UI
     _tag_redraw()
+
+def _handle_toast(instance: BlenderAchievement, current_level: int = 1, levels_gained: int = 1) -> None:
+    global _levelup_queue
+
+    if levels_gained:
+        if current_level < _levelup_queue:
+            return
+
+        _levelup_queue = current_level
+
+        bpy.app.timers.register(
+            lambda: _show_levelup_toast(current_level),
+            first_interval=2.0,
+            persistent=True
+        )
+
+    sound.stop_sounds()
+
+    toast.show_toast(
+        "You got an award!",
+        instance.NAME
+    )
+    sound.play_unlock_sound()
+
+def _show_levelup_toast(current_level: int = 1) -> None:
+    global _levelup_queue
+
+    if current_level < _levelup_queue:
+        return
+
+    toast.show_levelup_toast(
+        "Congratulations!",
+        f"You reached level {current_level}!",
+        current_level
+    )
+    sound.play_level_up_sound()
+
+    _levelup_queue = 0
+
+    
 
 def _tag_redraw() -> None:
     """Called whenever achievement or EXP state changes, forces the N-panel display to redraw so it accurately updates."""

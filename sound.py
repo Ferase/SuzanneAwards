@@ -27,6 +27,7 @@ DEFAULT_SOUND_BOOST: str = os.path.join(DEFAULT_SOUNDS_PATH, "boost.wav")
 
 # Playback device, created lazily on first use
 _device = None
+_levelup_queue: int = 0
 
 
 
@@ -68,16 +69,36 @@ def play_unlock_sound(achievement_id: str = "", achievement_kind: AchievementKin
     # Play the sound
     _play_sound(path)
 
-    if levels_gained and not bpy.app.timers.is_registered(lambda: play_level_up_sound(current_level, levels_gained)):
-        bpy.app.timers.register(lambda: play_level_up_sound(current_level, levels_gained), first_interval=2.0, persistent=True)
+    if levels_gained:
+        _queue_levelup(current_level)
 
-def play_level_up_sound(current_level: int = 1, levels_gained: int = 1) -> None:
+def _queue_levelup(current_level: int) -> None:
+    global _levelup_queue
+
+    if current_level < _levelup_queue:
+        return
+
+    _levelup_queue = current_level
+
+    bpy.app.timers.register(
+        lambda: play_level_up_sound(current_level),
+        first_interval=2.0,
+        persistent=True
+    )
+
+def play_level_up_sound(current_level: int = 1) -> None:
     """Plays the level up sound."""
+
+    global _levelup_queue
+
+    if current_level < _levelup_queue:
+        return
 
     path: str = _pick_levelup_sound(current_level)
 
     # Play the sound
     _play_sound(path)
+    _levelup_queue = 0
 
 def play_boost_sound() -> None:
     """Plays the boost sound."""

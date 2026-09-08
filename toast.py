@@ -178,9 +178,7 @@ def _draw():
             top_font_size = round(LEVELUP_BASE_TOP_FONT_SIZE * scale)
             bottom_font_size = round(LEVELUP_BASE_BOTTOM_FONT_SIZE * scale)
 
-            # Height is derived from its parts, rather than a separate
-            # fixed constant, so it can't quietly drift out of sync with
-            # the actual content as those parts get tuned
+            # Derive height from parts
             levelup_height = (
                 padding_top + levelup_icon_size + icon_text_gap
                 + top_font_size + line_gap + bottom_font_size + padding_bottom
@@ -215,7 +213,15 @@ def _draw():
                 _image_shader.bind()
                 _image_shader.uniform_sampler("image", _levelup_icon_texture)
                 _image_shader.uniform_float("color", (1.0, 1.0, 1.0, alpha))
+
+                # bpy.data.images store premultiplied alpha internally -
+                # the standard "ALPHA" blend mode assumes straight alpha,
+                # which is what makes transparent regions render as
+                # opaque black instead of blending correctly. Switch
+                # just for this draw call, then switch back.
+                gpu.state.blend_set('ALPHA_PREMULT')
                 icon_batch.draw(_image_shader)
+                gpu.state.blend_set('ALPHA')
 
                 text_top_y = icon_y - icon_text_gap - top_font_size
             else:
@@ -273,7 +279,12 @@ def _draw():
             _image_shader.bind()
             _image_shader.uniform_sampler("image", _icon_texture)
             _image_shader.uniform_float("color", (1.0, 1.0, 1.0, alpha))
+
+            # Same premultiplied-alpha fix as the level-up icon - see
+            # that comment for why this needs a different blend mode
+            gpu.state.blend_set('ALPHA_PREMULT')
             icon_batch.draw(_image_shader)
+            gpu.state.blend_set('ALPHA')
 
             text_x = icon_x + icon_size + icon_text_gap
         else:

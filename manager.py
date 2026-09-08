@@ -184,7 +184,7 @@ def _handle_toast(instance: BlenderAchievement, current_level: int = 1, levels_g
         if current_level < _levelup_queue:
             return
 
-        _levelup_queue = current_level
+        _levelup_queue = (current_level % 101)
 
         bpy.app.timers.register(
             lambda: _show_levelup_toast(current_level),

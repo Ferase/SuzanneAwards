@@ -89,7 +89,6 @@ def _draw_achievement_box(layout: bpy.types.UILayout, instance: BlenderAchieveme
             text=status
         )
 
-
 def _draw_daily_complete_popup(self, context: bpy.types.Context) -> None:
     """Body of the popup shown once all of today's daily achievements are complete."""
 
@@ -263,7 +262,7 @@ class SUZANNEAWARDS_PT_panel(bpy.types.Panel):
         header.separator()
 
         streak: int = playtime.get_current_streak()
-        header.label(text=f"Current startup streak: {streak:,} " + "day" if streak == 1 else "days")
+        header.label(text=f"Current startup streak: {streak:,} " + ("day" if streak == 1 else "days"))
 
         header.separator()
 

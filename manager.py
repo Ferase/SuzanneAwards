@@ -181,10 +181,10 @@ def _handle_toast(instance: BlenderAchievement, current_level: int = 1, levels_g
     global _levelup_queue
 
     if levels_gained:
-        if current_level < _levelup_queue:
+        if (current_level % 101) < _levelup_queue:
             return
 
-        _levelup_queue = current_level
+        _levelup_queue = (current_level % 101)
 
         bpy.app.timers.register(
             lambda: _show_levelup_toast(current_level),
@@ -203,7 +203,7 @@ def _handle_toast(instance: BlenderAchievement, current_level: int = 1, levels_g
 def _show_levelup_toast(current_level: int = 1) -> None:
     global _levelup_queue
 
-    if current_level < _levelup_queue:
+    if (current_level % 101) < _levelup_queue:
         return
 
     toast.show_levelup_toast(
@@ -211,7 +211,7 @@ def _show_levelup_toast(current_level: int = 1) -> None:
         f"You reached level {current_level:,}!",
         current_level
     )
-    sound.play_level_up_sound()
+    sound.play_level_up_sound(current_level)
 
     _levelup_queue = 0
 

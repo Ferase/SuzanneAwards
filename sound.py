@@ -90,6 +90,7 @@ def play_boost_sound() -> None:
 def _pick_levelup_sound(current_level: int) -> str:
     """Picks which level up sound to play based on the player's level."""
 
+    print(current_level)
     level_normalized: int = current_level % 100
 
     sound_level: int = 5

@@ -9,12 +9,13 @@ class MergeDistance(DailyAchievement):
     DESC = "Merge disconnected meshes by distance in Edit Mode"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [10, 15, 20]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]

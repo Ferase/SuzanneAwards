@@ -237,3 +237,12 @@ def save() -> None:
             "daily_seconds": daily_seconds,
             "boost_available": boost_available,
         }, f, indent=2)
+
+def reset() -> None:
+    """Resets all daily achievement progress and multipliers."""
+
+    global daily_seconds, boost_available
+
+    daily_seconds = 0.0
+    boost_available = False
+    save()

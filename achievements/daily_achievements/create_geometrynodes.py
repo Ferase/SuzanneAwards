@@ -7,7 +7,6 @@ class CreateGeometryNodes(TemplateSingleOpAchievement):
     NAME = "Procedural Modelling"
     DESC = "Create Geometry Nodes groups on objects"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [5, 10]
 

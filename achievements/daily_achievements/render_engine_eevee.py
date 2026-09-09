@@ -9,12 +9,13 @@ class RenderEngineEevee(DailyAchievement):
     DESC = "Successfully complete render jobs with the EEVEE engine"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [1, 2, 5]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.count = self.INIT_VALUE
         self.target_engline: str = "BLENDER_EEVEE"
         self.goal = self.GOAL_VARIANTS[0]
 

@@ -10,6 +10,7 @@ class RotateCircles(DailyAchievement):
     DESC = "Rotate objects or bones to add up to {goal_label} full circle rotations"
     EXP = 5
     TRACKED_FIELDS = ["distance"]
+    INIT_VALUE: float = 0.0
 
     GOAL_VARIANTS = [
         (3600, "10"),
@@ -19,7 +20,7 @@ class RotateCircles(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.distance: float = 0.0
+        self.distance: float = self.INIT_VALUE
         self.valid_ops: list[str] = [
             "TRANSFORM_OT_rotate",
             "TRANSFORM_OT_trackball"

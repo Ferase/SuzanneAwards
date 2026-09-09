@@ -7,7 +7,6 @@ class CreateShapeKeys(TemplateSingleOpAchievement):
     NAME = "Fine Detail"
     DESC = "Add new shape keys to an object"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]
 

@@ -10,13 +10,12 @@ class CreateUVUnwrap(DailyAchievement):
     NAME = "3D 2 2D"
     DESC = "UV unwrap some mesh"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]

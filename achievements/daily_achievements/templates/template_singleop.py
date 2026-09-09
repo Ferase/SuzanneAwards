@@ -13,12 +13,13 @@ class TemplateSingleOpAchievement(DailyAchievement):
     DESC = "A reusable template for single operator achievements."
     EXP = 0
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [0, 0, 0]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.desired_op: str = "operator_id_here"
 
         # Placeholder

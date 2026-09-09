@@ -7,7 +7,6 @@ class CreateCurves(TempalteStartEndOpAchievement):
     NAME = "More Than Mesh"
     DESC = "Create curve objects in Object Mode or Edit Mode"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]
 

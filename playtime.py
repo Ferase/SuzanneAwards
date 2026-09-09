@@ -34,7 +34,7 @@ _last_tick_time: float = 0.0
 last_login_date: str = ""
 
 # Persistent streak of days the user has opened Blender
-current_streak: int = 0
+current_streak: int = 1
 
 
 
@@ -190,6 +190,14 @@ def _tick() -> float:
  
     return TICK_INTERVAL
 
+def reset() -> None:
+    """Resets all playtime progress."""
+
+    global total_seconds, current_streak
+
+    total_seconds = 0.0
+    current_streak = 1
+    save()
 
 
 

@@ -137,3 +137,14 @@ def get_progress_fraction() -> float:
     # Get the current threshold and calculate the current EXP value's percentage of it
     threshold = exp_required_for_level(level)
     return exp / threshold if threshold > 0 else 0.0
+
+def reset() -> None:
+    """Resets all EXP and levels to 0."""
+
+    global exp, exp_total, level, daily_boost_multiplier
+
+    exp = 0
+    exp_total = 0
+    level = 1
+    daily_boost_multiplier = 1
+    save()

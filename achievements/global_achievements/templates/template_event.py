@@ -13,10 +13,11 @@ class TemplateEventAchievement(GlobalAchievement):
     DESC = "A reusable template for achievements that ony check for a sepcific event."
     EXP = 0
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.event_id: str = "event_id_here"
         self.goal = 0
 

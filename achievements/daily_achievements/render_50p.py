@@ -9,12 +9,13 @@ class Render50P(DailyAchievement):
     DESC = "Successfully complete a render job at a resolution scale below 100%"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [1, 2, 5]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.count = self.INIT_VALUE
         self.valid_ops = [
             "render_complete",
             "render_cancel"

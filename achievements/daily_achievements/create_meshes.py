@@ -7,7 +7,6 @@ class CreateMeshes(TempalteStartEndOpAchievement):
     NAME = "Building Blocks"
     DESC = "Create mesh objects in Object Mode or Edit Mode"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]
 

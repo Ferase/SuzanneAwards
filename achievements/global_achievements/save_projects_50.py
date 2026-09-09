@@ -9,10 +9,11 @@ class SaveProjects50(GlobalAchievement):
     DESC = "Save unique projects"
     EXP = 125
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.count = self.INIT_VALUE
         self.goal = 250
 
     def triggered(self, event: AchievementEvent) -> None:

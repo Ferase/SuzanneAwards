@@ -8,6 +8,7 @@ class MoveFootballFields(DailyAchievement):
     DESC = "Move or extrude objects or bones to add up to the length of {goal_label} football fields"
     EXP = 5
     TRACKED_FIELDS = ["distance"]
+    INIT_VALUE: float = 0.0
 
     GOAL_VARIANTS = [
         (1100, "10"),
@@ -17,7 +18,7 @@ class MoveFootballFields(DailyAchievement):
 
     def __init__(self) -> None:
         super().__init__()
-        self.distance: float = 0.0
+        self.distance: float = self.INIT_VALUE
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]

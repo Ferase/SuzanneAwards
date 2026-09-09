@@ -9,10 +9,11 @@ class Render10000(GlobalAchievement):
     DESC = "Render images or movies."
     EXP = 2500
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.valid_events: list[str] = [
             "render_complete",
             "render_cancel"

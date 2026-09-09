@@ -7,7 +7,6 @@ class RenderComposite(TemplateEventAchievement):
     NAME = "Final Pass"
     DESC = "Run the compositor on rendered images and frames"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50, 100]
 

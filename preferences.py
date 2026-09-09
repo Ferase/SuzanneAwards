@@ -6,9 +6,23 @@ Addon preferences, shown under Edit > Preferences > Add-ons > SuzanneAwards.
 
 import bpy
 
+from . import manager
 
 
-class ACHIEVEMENT_AP_preferences(bpy.types.AddonPreferences):
+
+class SUZANNEAWARDS_OT_pref_button_operator(bpy.types.Operator):
+    bl_idname = "suzanneawards.pref_reset_all"
+    bl_label = "Reset all progress"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, context):
+        manager.reset_all()
+        self.report({'INFO'}, "Achievement progress has been reset.")
+        return {'FINISHED'}
+    
+
+
+class SUZANNEAWARDS_AP_preferences(bpy.types.AddonPreferences):
     # Get the package name
     bl_idname = __package__
 
@@ -26,10 +40,11 @@ class ACHIEVEMENT_AP_preferences(bpy.types.AddonPreferences):
 
         layout = self.layout
         layout.prop(self, "volume", slider=True)
+        layout.operator("suzanneawards.pref_reset_all", icon="ERROR")
 
 
 
-def get_prefs() -> "ACHIEVEMENT_AP_preferences":
+def get_prefs() -> "SUZANNEAWARDS_AP_preferences":
     """Convenience accessor so other modules (sound.py) don't need to
     repeat the bpy.context.preferences.addons[...] lookup themselves."""
 
@@ -37,7 +52,10 @@ def get_prefs() -> "ACHIEVEMENT_AP_preferences":
 
 
 
-classes = (ACHIEVEMENT_AP_preferences,)
+classes = (
+    SUZANNEAWARDS_OT_pref_button_operator,
+    SUZANNEAWARDS_AP_preferences
+)
 
 def register():
     """Register preferences."""

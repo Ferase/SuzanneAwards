@@ -7,7 +7,6 @@ class CreateNodesCompositor(CreateNodesShader):
     NAME = "Tuning Things Up"
     DESC = "Create, connect, or disconnect nodes in the Compositor"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [25, 50]
 

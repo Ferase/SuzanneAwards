@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-progress: dict[str, Any] = {}
+progress: dict[str, Any] = dict()
 json_file_name: str = "achievement_progress.json"
 
 
@@ -43,3 +43,11 @@ def save() -> None:
 
     with open(get_save_path(), "w") as f:
         json.dump(progress, f, indent=2)
+
+def reset_all() -> None:
+    """Resets all progress."""
+
+    global progress
+
+    progress.clear()
+    save()

@@ -8,10 +8,11 @@ class MoveWorld(GlobalAchievement):
     DESC = "Move or extrude objects or bones to add up to the circumference of earth."
     EXP = 5000
     TRACKED_FIELDS = ["distance"]
+    INIT_VALUE: float = 0.0
 
     def __init__(self) -> None:
         super().__init__()
-        self.distance: float = 0.0
+        self.distance: float = self.INIT_VALUE
 
         # Placeholder
         self.goal = 40_075

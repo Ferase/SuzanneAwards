@@ -7,7 +7,6 @@ class OpenProjects(TemplateEventAchievement):
     NAME = "Where Were We?"
     DESC = "Open projects"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]
 

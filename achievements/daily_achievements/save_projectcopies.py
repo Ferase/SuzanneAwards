@@ -9,12 +9,13 @@ class SaveProjectCopies(DailyAchievement):
     DESC = "Save copies of projects"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [1, 2, 5]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.count = self.INIT_VALUE
         self.goal = self.GOAL_VARIANTS[0]
 
     def triggered(self, event: AchievementEvent) -> None:

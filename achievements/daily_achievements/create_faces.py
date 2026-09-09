@@ -11,12 +11,13 @@ class CreateFaces(DailyAchievement):
     DESC = "Fill in holes with faces on meshes"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [25, 50, 100]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.valid_ops: list[str] = [
             "MESH_OT_fill",
             "MESH_OT_fill_grid",

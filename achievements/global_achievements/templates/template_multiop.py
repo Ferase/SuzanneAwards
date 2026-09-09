@@ -13,10 +13,11 @@ class TemplateMultiOpAchievement(GlobalAchievement):
     DESC = "A reusable template for multiple possible operator achievements."
     EXP = 0
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.valid_ops: list[str] = [
             "operator_id1_here",
             "operator_id2_here"

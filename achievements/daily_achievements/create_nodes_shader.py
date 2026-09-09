@@ -10,12 +10,13 @@ class CreateNodesShader(DailyAchievement):
     DESC = "Create, connect, or disconnect nodes in the Shader Editor"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [25, 50]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.space_tree_type: str = "ShaderNodeTree"
         self.valid_ops: list[str] = [
             "NODE_OT_add_node",

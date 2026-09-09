@@ -10,12 +10,13 @@ class CreateLoopCuts(DailyAchievement):
     DESC = "Create loop cuts on meshes in Edit Mode"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [25, 50, 100]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]

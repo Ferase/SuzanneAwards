@@ -7,7 +7,6 @@ class CreateBones(TemplateMultiOpAchievement):
     NAME = "It's Even More Alive!"
     DESC = "Add bones to an armature"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [10, 15, 20]
 

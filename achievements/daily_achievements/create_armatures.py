@@ -7,7 +7,6 @@ class CreateArmatures(TemplateSingleOpAchievement):
     NAME = "It's Alive!"
     DESC = "Create armature objects"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5]
 

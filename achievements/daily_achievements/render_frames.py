@@ -9,6 +9,7 @@ class RenderFrames(DailyAchievement):
     DESC = "Successfully render any number of images as images or movies"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [10, 25, 50]
 

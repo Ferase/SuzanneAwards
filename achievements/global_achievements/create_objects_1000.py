@@ -9,10 +9,11 @@ class CreateObjects1000(GlobalAchievement):
     DESC = "Create objects in the 3D View."
     EXP = 500
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self._valid_prefixes: list[str] = [
             "OBJECT_",
             "MESH_",

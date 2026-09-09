@@ -7,7 +7,6 @@ class MeshSpin(TemplateSingleOpAchievement):
     NAME = "Junction"
     DESC = "Use the spin tool on meshes in Edit Mode"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [5, 10, 15]
 

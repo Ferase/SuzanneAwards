@@ -8,12 +8,13 @@ class CreateEdges(DailyAchievement):
     DESC = "Create edges"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [25, 50, 100]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
         self.valid_ops: list[str] = [
             "MESH_OT_extrude_region_move",
             "MESH_OT_extrude_edges_move",

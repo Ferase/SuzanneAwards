@@ -7,7 +7,6 @@ class KeyframeInterp(TemplateSingleOpAchievement):
     NAME = "That Feels Right"
     DESC = "Modify the interpolation type of keyframes"
     EXP = 5
-    TRACKED_FIELDS = ["count"]
 
     GOAL_VARIANTS = [1, 2, 5, 10]
 

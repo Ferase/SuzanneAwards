@@ -13,12 +13,13 @@ class TempalteStartEndOpAchievement(DailyAchievement):
     DESC = "A reusable template for achievements that are seeking operators that start and end with something."
     EXP = 0
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [0, 0, 0]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count: int = 0
+        self.count: int = self.INIT_VALUE
 
         self._ignore: str = "__IgNoRe__"
         self.op_startswith: str = self._ignore

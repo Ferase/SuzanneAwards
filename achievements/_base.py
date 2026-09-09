@@ -42,6 +42,9 @@ class BlenderAchievement:
     # Fields to be tracked and saved
     TRACKED_FIELDS: list[str] = []
 
+    # Initial main value
+    INIT_VALUE = None
+
     def __init__(self) -> None:
         # Basic state data
         self.unlocked: bool = False
@@ -137,6 +140,14 @@ class BlenderAchievement:
 
         return 0.0
 
+    def reset(self) -> None:
+        """Resets the achievement state to default and re-locks it."""
+
+        # Set the mian tracked value to the default
+        if self.TRACKED_FIELDS:
+            setattr(self, self.TRACKED_FIELDS[0], self.INIT_VALUE)
+
+        self.lock()
 
 
 class GlobalAchievement(BlenderAchievement):

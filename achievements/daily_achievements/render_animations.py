@@ -9,12 +9,13 @@ class RenderAnimations(DailyAchievement):
     DESC = "Successfully complete animation render jobs (2 frames minimum)"
     EXP = 5
     TRACKED_FIELDS = ["count"]
+    INIT_VALUE: int = 0
 
     GOAL_VARIANTS = [1, 2, 5]
 
     def __init__(self) -> None:
         super().__init__()
-        self.count = 0
+        self.count = self.INIT_VALUE
         self.valid_ops: list[str] = [
             "render_complete",
             "render_cancel",

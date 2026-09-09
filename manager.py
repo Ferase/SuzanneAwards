@@ -11,6 +11,7 @@ from . import daily
 from . import exp
 from . import toast
 from . import sound
+from . import playtime
 from .events import AchievementEvent
 from .achievements._base import BlenderAchievement, GlobalAchievement, DailyAchievement, AchievementKind
 from .achievements.global_achievements import GLOBAL_ACHIEVEMENT_CLASSES
@@ -214,6 +215,22 @@ def _show_levelup_toast(current_level: int = 1) -> None:
     sound.play_level_up_sound(current_level)
 
     _levelup_queue = 0
+
+def reset_all() -> None:
+    """Resets all achievement progress."""
+
+    global _levelup_queue, _instances
+
+    daily.reset()
+    exp.reset()
+    playtime.reset()
+    state.reset_all()
+    _levelup_queue = 0
+
+    for instance in _instances.values():
+        instance.reset()
+
+    _tag_redraw()
 
     
 

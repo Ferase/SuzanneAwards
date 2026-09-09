@@ -14,6 +14,7 @@ class CreateBones(TemplateMultiOpAchievement):
         super().__init__()
         self.valid_ops: list[str] = [
             "ARMATURE_OT_bone_primitive_add",
+            "ARMATURE_OT_extrude_move",
             "ARMATURE_OT_subdivide"
         ]
         

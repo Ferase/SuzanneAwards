@@ -225,9 +225,7 @@ class SUZANNEAWARDS_OT_boostbtn(bpy.types.Operator):
 
         if claimed:
             toast.show_toast("You boosted your EXP gain!", f"Boosted x{exp.daily_boost_multiplier}")
-
-            if sound._handle.status != sound.aud.STATUS_PLAYING:
-                sound.play_boost_sound()
+            sound.play_boost_sound()
 
         # Redraw immediately so the button reflects boost_available's state
         for window in context.window_manager.windows:

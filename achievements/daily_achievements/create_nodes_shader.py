@@ -21,11 +21,30 @@ class CreateNodesShader(DailyAchievement):
         self.valid_ops: list[str] = [
             "NODE_OT_add_node",
             "NODE_OT_link",
+            "NODE_OT_duplicate_move",
             "NODE_OT_translate_attach_remove_on_cancel"
         ]
 
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]
+
+    def _user_in_node_editor(self) -> bool:
+        """Check if the user is in the shader editor."""
+    
+        wm = bpy.context.window_manager
+        if wm is None:
+            return False
+    
+        for window in wm.windows:
+            for area in window.screen.areas:
+                if area.type != "NODE_EDITOR":
+                    continue
+    
+                space = area.spaces.active
+                if space is not None and getattr(space, "tree_type", None) == self.space_tree_type:
+                    return True
+    
+        return False
 
     def triggered(self, event: AchievementEvent) -> None:
         if event.type != "operator":
@@ -34,12 +53,7 @@ class CreateNodesShader(DailyAchievement):
         if event.bl_idname not in self.valid_ops:
             return
 
-        space: bpy.types.Space = bpy.context.space_data
-
-        if not space or space.type != "NODE_EDITOR":
-            return
-
-        if space.tree_type != self.space_tree_type:
+        if not self._user_in_node_editor():
             return
 
         self.count += 1

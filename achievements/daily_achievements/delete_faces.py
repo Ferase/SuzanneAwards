@@ -45,6 +45,7 @@ class DeleteFaces(DailyAchievement):
             self.save()
             return
 
+        self.count = self.goal
         self.unlock()
 
     def status_text(self) -> str:

@@ -82,7 +82,7 @@ def _on_render_complete(dummy) -> None:
 
     # Emit event with properties
     manager.handle_event(AchievementEvent(type="render_complete", extra={
-        "frames": _frame_count,
+        "frames": _frame_count + 1,
         "render_engine": _render_engine,
         "render_format": _render_format,
         "resolution_percentage": _resolution_percentage

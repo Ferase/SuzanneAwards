@@ -55,6 +55,7 @@ from .render_composite import RenderComposite
 # Animation
 from .keyframe_interp import KeyframeInterp
 from .create_fcurvemodifiers import CreateFCurveModifiers
+from .move_graph import MoveGraph
 
 # Project
 from .save_projects import SaveProjects
@@ -107,6 +108,7 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     # Animation
     KeyframeInterp,
     CreateFCurveModifiers,
+    MoveGraph,
 
     # Render
     RenderImages,

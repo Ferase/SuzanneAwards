@@ -141,13 +141,17 @@ class BlenderAchievement:
         return 0.0
 
     def reset(self) -> None:
-        """Resets the achievement state to default and re-locks it."""
+        """Resets the achievement state to default and re-locks it.
+        
+        Zeroes out the achievement progress when the user resets theri progress in the preferences."""
 
         # Set the mian tracked value to the default
         if self.TRACKED_FIELDS:
-            setattr(self, self.TRACKED_FIELDS[0], self.INIT_VALUE)
+            if hasattr(self, self.TRACKED_FIELDS[0]):
+                setattr(self, self.TRACKED_FIELDS[0], self.INIT_VALUE)
 
         self.lock()
+
 
 
 class GlobalAchievement(BlenderAchievement):

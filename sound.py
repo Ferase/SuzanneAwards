@@ -55,18 +55,13 @@ def _play_sound(path: str) -> None:
     # Set the volume
     _handle.volume = preferences.get_prefs().volume
 
-def play_unlock_sound(achievement_id: str = "", achievement_kind: AchievementKind = AchievementKind.GLOBAL, current_level: int = 0, levels_gained: int = 0) -> None:
+def play_unlock_sound(instance: BlenderAchievement) -> None:
     """Plays the achievement unlock sound. If a custom unlock sound exists, play that instead."""
 
     # Check if the achievement has a custom unlock sound
     path: str = DEFAULT_SOUND_UNLOCK_GLOBAL
-    if achievement_id:
-        new_path = os.path.join(BASE_SOUNDS_PATH, f"{achievement_id}.wav")
-        if os.path.exists(new_path):
-            path = new_path
-        else:
-            if achievement_kind == AchievementKind.DAILY:
-                path = DEFAULT_SOUND_UNLOCK_DAILY
+    if instance.KIND == AchievementKind.DAILY:
+        path = DEFAULT_SOUND_UNLOCK_DAILY
 
     # Play the sound
     _play_sound(path)

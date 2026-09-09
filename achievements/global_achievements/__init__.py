@@ -9,17 +9,10 @@ from .delete_defaultcube import DeleteDefaultCube
 from .recreate_defaultcube import RecreateDefaultCube
 from .modes_1000 import Modes1000
 
-# Startup Streak
-from .startup_2d import Startup2D
-from .startup_7d import Startup7D
-from .startup_14d import Startup14D
-from .startup_30d import Startup30D
-from .startup_60d import Startup60D
-from .startup_180d import Startup180D
-from .startup_365d import Startup365D
-
 # Object Creation
 from .create_objects_1000 import CreateObjects1000
+from .create_all_meshes import CreateAllMeshes
+from .create_all_curves import CreateAllCurves
 
 # Object Editing
 from .move_world import MoveWorld
@@ -29,6 +22,15 @@ from .create_nodes_1000 import CreateNodes1000
 
 # Rebder
 from .render_10000 import Render10000
+
+# Startup Streak
+from .startup_2d import Startup2D
+from .startup_7d import Startup7D
+from .startup_14d import Startup14D
+from .startup_30d import Startup30D
+from .startup_60d import Startup60D
+from .startup_180d import Startup180D
+from .startup_365d import Startup365D
 
 # Project
 from .save_projects_50 import SaveProjects50
@@ -51,17 +53,10 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
     RecreateDefaultCube,
     Modes1000,
 
-    # Startup Streak
-    Startup2D,
-    Startup7D,
-    Startup14D,
-    Startup30D,
-    Startup60D,
-    Startup180D,
-    Startup365D,
-
     # Object Creation
     CreateObjects1000,
+    CreateAllMeshes,
+    CreateAllCurves,
 
     # Object Editing
     MoveWorld,
@@ -71,6 +66,15 @@ GLOBAL_ACHIEVEMENT_CLASSES: list[GlobalAchievement] = [
 
     # Render
     Render10000,
+
+    # Startup Streak
+    Startup2D,
+    Startup7D,
+    Startup14D,
+    Startup30D,
+    Startup60D,
+    Startup180D,
+    Startup365D,
 
     # Project
     SaveProjects50,

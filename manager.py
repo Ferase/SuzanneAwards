@@ -199,7 +199,7 @@ def _handle_toast(instance: BlenderAchievement, current_level: int = 1, levels_g
         "You got an award!",
         instance.NAME
     )
-    sound.play_unlock_sound()
+    sound.play_unlock_sound(instance)
 
 def _show_levelup_toast(current_level: int = 1) -> None:
     global _levelup_queue

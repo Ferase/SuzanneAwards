@@ -16,6 +16,8 @@ from .create_armatures import CreateArmatures
 from .create_curves import CreateCurves
 from .create_lights import CreateLights
 from .create_materials import CreateMaterials
+from .create_cameras import CreateCameras
+from .create_images import CreateImages
 
 # Object Editing
 from .create_bones import CreateBones
@@ -36,6 +38,7 @@ from .mesh_inset import MeshInset
 from .mesh_spin import MeshSpin
 from .mesh_bevel import MeshBevel
 from .mesh_knife import MeshKnife
+from .edit_uv_mesh import EditUVMesh
 
 # Nodes
 from .create_nodes_compositor import CreateNodesCompositor
@@ -78,6 +81,8 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     CreateCurves,
     CreateLights,
     CreateMaterials,
+    CreateCameras,
+    CreateImages,
 
     # Object Editing
     CreateBones,
@@ -98,6 +103,7 @@ DAILY_ACHIEVEMENT_CLASSES: list[DailyAchievement] = [
     MeshSpin,
     MeshBevel,
     MeshKnife,
+    EditUVMesh,
 
     # Nodes
     CreateNodesCompositor,

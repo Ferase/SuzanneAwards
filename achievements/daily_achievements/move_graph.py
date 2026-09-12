@@ -27,11 +27,25 @@ class MoveGraph(DailyAchievement):
         # Placeholder
         self.goal = self.GOAL_VARIANTS[0]
 
+    def _user_in_graph_editor(self) -> bool:
+        """Check if the user is in the graph editor."""
+    
+        wm = bpy.context.window_manager
+        if wm is None:
+            return False
+    
+        for window in wm.windows:
+            for area in window.screen.areas:
+                if area.type != "GRAPH_EDITOR":
+                    return True
+    
+        return False
+
     def triggered(self, event: AchievementEvent) -> None:
         if event.type != "operator":
             return
 
-        if bpy.context.area.type != "GRAPH_EDITOR":
+        if not self._user_in_graph_editor():
             return
 
         if event.bl_idname not in self.valid_ops:
